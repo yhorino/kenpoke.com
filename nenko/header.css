@@ -1,0 +1,67 @@
+/* CSS Document */
+
+.header_logobox{
+ padding: 10px 0;
+}
+.header_logoimgbox{
+ width: 330px;
+}
+.header_logoimgbox img{
+ display: block;
+ width: 100%;
+}
+.header_menubox{
+ background-color: var(--main_color);
+ color: #fff;
+ padding: 15px 0;
+}
+.header_menubox_name{
+ 
+}
+
+.flow_path {
+    padding: 40px 0 10px;
+}
+.flow_path .inner {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0px;
+}
+.flow_item{
+ background-color: #ccc;
+ color: #666;
+ padding: 5px 20px;
+ margin: 10px 0;
+ text-align: center;
+ position: relative;
+ 
+font-size: clamp(9px, 3vw, 16px);
+    height: 34px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+.flow_item::before{
+ content: '';
+ position: absolute;
+ top: 0px;
+ left: 0px;
+ border-top: 17px solid transparent;
+ border-bottom: 17px solid transparent;
+ border-left: 15px solid #fff;
+ border-right: none;
+}
+.flow_item::after{
+ content: '';
+ position: absolute;
+ top: 0px;
+ right: 0px;
+ border-top: 17px solid #fff;
+ border-bottom: 17px solid #fff;
+ border-left: 15px solid transparent;
+ border-right: none;
+}
+.flow_item.flow_active{
+ background-color: var(--main_color);
+ color: #fff;
+}
