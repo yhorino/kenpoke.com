@@ -5,6 +5,25 @@
 
   $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
 
+ $box_title = '継続申込　受付完了';
+ $header_title = '継続申込を受付しました';
+ $body = '
+     ご継続申込いただき、ありがとうございました。<br>
+     お振込先のメールを送信しています。<br>
+     期限内に必ず振込ください。<br>
+     なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。
+ ';
+
+ if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+  $box_title = '脱退連絡受付しました';
+  $header_title = '脱退のご連絡確認しました';
+  $body = '
+      いつもご利用いただき、ありがとうございました。<br>
+      <br>
+      脱退のご連絡を受付ました。<br>
+      またのご利用をお待ちしております。
+  ';
+ }
 ?>
 
 <!doctype html>
@@ -32,21 +51,18 @@
 
   
  <div class="outer_box inner">
-  <h2 class="outer_box_title">継続申込　受付完了</h2>
+  <h2 class="outer_box_title"><?php echo $box_title;?></h2>
   <div class="outer_box_body">
    
    <div class="kingaku_box">
     <h3 class="keizokusyalist_header">
-     <span class="keizokusyalist_header_title">継続申込を受付しました</span>
+     <span class="keizokusyalist_header_title"><?php echo $header_title;?></span>
      <span class=""></span>
      <span class=""></span>
     </h3>
     
     <p>
-     ご継続申込いただき、ありがとうございました。<br>
-     お振込先のメールを送信しています。<br>
-     期限内に必ず振込ください。<br>
-     なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。
+     <?php echo $body;?>
     </p>
     
     <form name="form" method="post" action="trans.php">

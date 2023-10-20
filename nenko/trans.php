@@ -5,15 +5,14 @@
  include_once('./class.php');
 
  /* DEBUG */
- if(isset($_GET['debugstart']) && $_GET['debugstart'] == 1){
-  $nenko_data = new NenkoData("999888");
+ if(isset($_GET['debugstart'])){
+  if($_GET['debugstart'] == 1){$type = '一人親方代理';}
+  if($_GET['debugstart'] == 2){$type = '一人親方加入者';}
+  if($_GET['debugstart'] == 11){$type = '事務組合会社';}
+  if($_GET['debugstart'] == 12){$type = '事務組合加入者';}
+  $nenko_data = new NenkoData($type, $_GET['no']);
   $nenko_data->getNenkoRecordData();
-  
-  $nenko_kanyusya_data[] = new NenkoKanyusyaData("00000031");
-  $nenko_kanyusya_data[] = new NenkoKanyusyaData("00000032");
-  $nenko_kanyusya_data[0]->getNenkoRecordData();
-  $nenko_kanyusya_data[1]->getNenkoRecordData();
-  $nenko_data->addKanyusyaArray($nenko_kanyusya_data);
+  $nenko_data->getNenkoKanyusyaRecordData();
 
   $_SESSION['nenko_data'] = serialize($nenko_data);
 
@@ -35,7 +34,11 @@
    }
    $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
    
-   header('Location: kingaku.php');
+   if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+    header('Location: done.php');
+   } else {
+    header('Location: kingaku.php');
+   }
    break;
   }
   case 'kingaku':
@@ -47,7 +50,7 @@
   case 'done':
   {
    
-   header('Location: trans.php?debugstart=1');
+   header('Location: debugstart.php');
    break;
   }
  }

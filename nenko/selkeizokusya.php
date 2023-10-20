@@ -120,6 +120,7 @@
  <script>
   $(function(){
    $('.change_nichigaku_body').hide();
+   $('input[name="info_check"]').prop('checked', false);
    
    $('input[name="info_check"]').click(function(){
     if($(this).prop('checked') == true){
