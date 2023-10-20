@@ -1,6 +1,7 @@
 <?php
  include_once('../bin/sf_Api.php');
 
+/* 代理・会社データ */
  class NenkoData{
   private $_Id;
   private $_Type;
@@ -16,8 +17,15 @@
    $this->_No = $No;
    $this->_Name = '';
   }
+  
+  /* 参照関数 */
   public function No(){return $this->_No;}
   public function Name(){return $this->_Name;}
+  
+  /* 更新関数 */
+  public function updateKanyusyaKeizoku($idx, $val){
+   $this->_KanyusyaData[$idx]->setKeizoku($val);
+  }
   
   /*
   public function addKanyusyaArray(array $nkd){
@@ -40,10 +48,8 @@
    return $count;
   }
   
-  public function updateKanyusyaKeizoku($idx, $val){
-   $this->_KanyusyaData[$idx]->setKeizoku($val);
-  }
-  
+  /* SFから代理年更レコード取得 */  
+  /* 個人のときは代理データにも個人データを入れる */
   public function getNenkoRecordData(){
    if($this->_Type == '一人親方代理'){
     return $this->_getNenkoRecordData_oyakatadairi();
@@ -83,6 +89,7 @@
    return true;
   }
   
+  /* SFから代理に紐づく加入者年更レコード取得 */  
   public function getNenkoKanyusyaRecordData(){
    if($this->_Type == '一人親方代理') {
     return $this->_getNenkoKanyusyaRecordData_oyakatadairi();
@@ -124,7 +131,7 @@
 
 
 
-
+/* 加入者データ */
  class NenkoKanyusyaData{
   private $_Type;
   private $_RecordTypeId;
@@ -143,18 +150,14 @@
    $this->_Keizoku = 'keizoku';
   }
   
+  /* 参照関数 */
   public function No(){return $this->_No;}
   public function Name(){return $this->_Name;}
   public function Nichigaku(){return $this->_Nichigaku;}
   public function Kingaku(){return $this->_Kingaku;}
   public function Keizoku(){return $this->_Keizoku;}
-  public function isKeizoku(){
-   if($this->_Keizoku == 'keizoku'){
-    return true;
-   }
-   return false;
-  }
-  
+
+  /* 更新関数 */
   public function setKeizoku($val){
    if($val == 'keizoku'){
     $this->_Keizoku = 'keizoku';
@@ -166,6 +169,15 @@
    }
   }
   
+  public function isKeizoku(){
+   if($this->_Keizoku == 'keizoku'){
+    return true;
+   }
+   return false;
+  }
+  
+  
+  /* SFから加入者年更レコード取得 */  
   public function getNenkoRecordData(){
    $_select = "Id,shimeisei__c,shimeimei__c,genzainonichigaku__c,hokenryooshiharaisogaku__c";
    $_from = "nendokoshin__c";
