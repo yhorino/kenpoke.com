@@ -129,6 +129,13 @@
      $('input[name="submit_button"]').prop('disabled', true);
     }
    });
+   $('.keizokusel_button input').click(function(){
+    $(this).parents('.keizokusya_itembox').removeClass('dattai');
+    $val = $(this).val();
+    if($val == 'dattai'){
+     $(this).parents('.keizokusya_itembox').addClass('dattai');
+    }
+   });
   });
   function change_nichigaku_title_click($idx){
    $('#nichigaku_title'+$idx).next('.change_nichigaku_body').toggle();

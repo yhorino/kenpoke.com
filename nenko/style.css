@@ -56,6 +56,12 @@
     gap: 25px;
     background-color: #fff;
 }
+.keizokusya_itembox.dattai {
+ background-color: #ccc;
+}
+.dattai .keizokusya_itembox_right {
+ display: none;
+}
 
 .keizokusya_infobox {
     margin: 50px 0 0 0;
@@ -97,6 +103,7 @@
     padding: 10px;
     display: block;
     cursor: pointer;
+ background-color: #fff;
 }
 .keizokusel_button:has(input:checked) {
     background-color: var(--sub_color);

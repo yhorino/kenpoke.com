@@ -9,6 +9,7 @@
   private $_Nendo;
   private $_No;
   private $_Name;
+  private $_Sougaku;
   
   private $_KanyusyaData = [];
   
@@ -21,10 +22,30 @@
   /* 参照関数 */
   public function No(){return $this->_No;}
   public function Name(){return $this->_Name;}
+  public function Sougaku(){return $this->_Sougaku;}
+  public function Type(){return $this->_Type;}
   
   /* 更新関数 */
   public function updateKanyusyaKeizoku($idx, $val){
    $this->_KanyusyaData[$idx]->setKeizoku($val);
+  }
+  public function updateSougaku($val){
+   $this->_Sougaku = $val;
+  }
+  
+  public function isTypeOyakata(){
+   if($this->_Type == '一人親方代理' || $this->_Type == '一人親方加入者'){
+    return true;
+   } else {
+    return false;
+   }
+  }
+  public function isTypeJimukumiai(){
+   if($this->_Type == '事務組合会社' || $this->_Type == '事務組合加入者'){
+    return true;
+   } else {
+    return false;
+   }
   }
   
   /*
@@ -140,6 +161,7 @@
   private $_Name;
   private $_Nichigaku;
   private $_Kingaku;
+  private $_SanteiKisogaku;
 
   private $_Keizoku;
   
@@ -156,6 +178,7 @@
   public function Nichigaku(){return $this->_Nichigaku;}
   public function Kingaku(){return $this->_Kingaku;}
   public function Keizoku(){return $this->_Keizoku;}
+  public function SanteiKisogaku(){return $this->_SanteiKisogaku;}
 
   /* 更新関数 */
   public function setKeizoku($val){
@@ -168,6 +191,9 @@
     return;
    }
   }
+  public function setSanteiKisogaku($val){
+   $this->_SanteiKisogaku = $val;
+  }
   
   public function isKeizoku(){
    if($this->_Keizoku == 'keizoku'){
@@ -176,6 +202,9 @@
    return false;
   }
   
+  public function calcSanteiKisogaku(){
+   $this->_SanteiKisogaku = $this->_Nichigaku*365;
+  }
   
   /* SFから加入者年更レコード取得 */  
   public function getNenkoRecordData(){

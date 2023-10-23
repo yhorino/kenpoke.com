@@ -29,9 +29,33 @@
   case 'selkeizokusya':
   {
    $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+
+   /* 継続者確認 */
+   $_sougaku = 0;
+   $_santei_goukei = 0;
    for($i=0;$i<$nenko_data_unserialize->getKanyusyaNum();$i++){
+    /* 継続/脱退　状態更新 */
     $nenko_data_unserialize->updateKanyusyaKeizoku($i, $_POST['keizokusel_'.$i]);
+    
+    if($nenko_data_unserialize->getKanyusyaData($i)->isKeizoku() == true){
+     $_sougaku += $nenko_data_unserialize->getKanyusyaData($i)->Kingaku();
+     //$_santei_goukei += 
+    }
+    
    }
+   /* 合計金額の計算 */
+   if($nenko_data_unserialize->isTypeOyakata() == true){
+    /* 一人親方：保険料＋会費　の合計額 */
+    $nenko_data_unserialize->updateSougaku($_sougaku);
+   }
+   if($nenko_data_unserialize->isTypeJimukumiai() == true){
+    /* 事務組合： 
+    ・日額×365×月数÷12＝1人当たりの算定基礎額
+    ・SUM（算定基礎額）　→切り捨てる
+    ・ここに料率をかける　→切り捨てる
+    */
+   }
+   
    $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
    
    if($nenko_data_unserialize->getKeizokusyaNum() <= 0){

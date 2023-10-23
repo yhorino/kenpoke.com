@@ -70,16 +70,16 @@
     <div class="keizokusya_mitsumori_box">
      <div class="keizokusya_mitsumori_sougaku">
       <span class="keizokusya_mitsumori_sougaku_title">保険料等のお支払い総額</span>
-      <span class="keizokusya_mitsumori_sougaku_kingaku">30,095 円</span>
+      <span class="keizokusya_mitsumori_sougaku_kingaku"><?php echo number_format($nenko_data_unserialize->Sougaku());?> 円</span>
      </div>
      <div class="keizokusya_mitsumori_info">
       <div class="keizokusya_mitsumori_info_line">
        <span class="keizokusya_mitsumori_info_line_title">継続期間</span>
-       <span class="keizokusya_mitsumori_info_line_text">2023年4月1日　～　2024年3月31日</span>      
+       <span class="keizokusya_mitsumori_info_line_text">2024年4月1日　～　2025年3月31日</span>      
       </div>
       <div class="keizokusya_mitsumori_info_line">
        <span class="keizokusya_mitsumori_info_line_title">継続対象者</span>
-       <span class="keizokusya_mitsumori_info_line_text">1 名</span>
+       <span class="keizokusya_mitsumori_info_line_text"><?php echo $nenko_data_unserialize->getKeizokusyaNum();?> 名</span>
       </div>
      </div>
      <p class="keizokusya_mitsumori_addinfo">※ お支払総額には会費、保険料が含まれています。</p>
