@@ -2,10 +2,9 @@
   <p><span style="color: red;">振替日は、3月8日（金）です。</span></p>
   <p>下記ご登録口座より振替となります。事前にご確認をお願いいたします。</p>
   <br>
-  <p>金融機関：XX銀行</p>
-  <p>口座番号：***1234</p>
+  <p><?php echo nl2br($nenko_data_unserialize->KozaJoho());?></p>
   <br>
-  <p>※ ご登録の口座情報を変更される場合は、必ず0120-855-865までお電話ください。</p>
+  <p>※ ご登録の口座情報を変更される場合は、必ず<?php if($nenko_data_unserialize->isTypeOyakata() == true){echo '0120-931-519';} else {echo '0120-855-865';}?>までお電話ください。</p>
  </div>
 
  <form name="form" method="post" action="trans.php">

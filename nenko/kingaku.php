@@ -3,7 +3,9 @@
  header("Content-type: text/html;charset=utf-8");
  include_once('./class.php');
 
-  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ include('./session_check.php');
+
 ?>
 
 <!doctype html>
@@ -97,11 +99,10 @@
      <span class=""></span>
      <span class=""></span>
     </h3>
-    
     <div class="shiharai_buttons_box">
-     <label class="shiharai_button"><input type="radio" name="shiharai_sel" id="shiharai_card" value="クレジットカード" checked>クレジットカード</label>
-     <label class="shiharai_button"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="銀行振込">銀行振込</label>
-     <label class="shiharai_button"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="口座振替">口座振替</label>
+     <label class="shiharai_button" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="クレジットカード" checked>クレジットカード</label>
+     <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="銀行振込">銀行振込</label>
+     <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="口座振替">口座振替</label>
     </div>
    
     <div id="shiharai_card_box" class="shiharai_card_box">
@@ -118,17 +119,29 @@
     
   </div>
   
-   
+  </div>
  </div>
   
  
 <?php include_once('./footer.php'); ?>
  
  <script>
+  $furikae = <?php if($nenko_data_unserialize->isFurikae() == true){echo 'true';} else {echo 'false';}?>;
   $(function(){
    
    disp_init();
-   $('#shiharai_card_box').show();
+   $('#kingaku_box_shiharai').hide();
+   
+   if($furikae == true){
+    $('#shiharai_furikae_box').show();    
+    $('#shiharai_card_label').hide();
+    $('#shiharai_bank_label').hide();
+    $('#shiharai_furikae').prop('checked', true);
+    $('.shiharai_buttons_box').addClass('buttons_furikae');
+   } else {
+    $('#shiharai_card_box').show();
+    $('#shiharai_furikae_label').hide();
+   }
    
    $('input[name="shiharai_sel"]').change(function(){
     $sel = $('input[name="shiharai_sel"]:checked').val();
@@ -147,6 +160,11 @@
      $('#shiharai_furikae_box').show();
      return;
     }
+   });
+   
+   $('input[name="show_shiharai_button"]').click(function(){
+    $('#kingaku_box_shiharai').show();
+    $(this).hide();
    });
    
   });

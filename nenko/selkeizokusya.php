@@ -3,7 +3,9 @@
  header("Content-type: text/html;charset=utf-8");
  include_once('./class.php');
 
-  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ include('./session_check.php');
+
 ?>
 
 <!doctype html>
@@ -93,7 +95,7 @@
    
    <div class="keizokusya_infobox">
     <div class="keizokusya_infobox_title">
-     年度途中の日額変更はできません。<br>ご確認ください。
+     <img src="/nenko/img/symbol018.png" alt="" class="keizokusya_infobox_title_icon"><span class="keizokusya_infobox_title_text">年度途中の日額変更はできません。<br>ご確認ください。</span>
     </div>
     <div class="keizokusya_infobox_body">
      ご加入者さまから「日額を変更したい。次の現場は日額10,000円以上でないと入場できないと言われた」とお電話をいただく事例がございます。<br>

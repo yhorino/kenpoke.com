@@ -1,7 +1,9 @@
 <?php
  include_once('../bin/sf_Api.php');
 
+/**********************************************************************/
 /* 代理・会社データ */
+/**********************************************************************/
  class NenkoData{
   private $_Id;
   private $_Type;
@@ -10,6 +12,10 @@
   private $_No;
   private $_Name;
   private $_Sougaku;
+  private $_Furikae;
+  private $_KozaJoho;
+  private $_ShiharaiType;
+  private $_ShiharaiKigen;
   
   private $_KanyusyaData = [];
   
@@ -24,15 +30,26 @@
   public function Name(){return $this->_Name;}
   public function Sougaku(){return $this->_Sougaku;}
   public function Type(){return $this->_Type;}
+  public function KozaJoho(){return $this->_KozaJoho;}
+  public function ShiharaiType(){return $this->_ShiharaiType;}
   
   /* 更新関数 */
   public function updateKanyusyaKeizoku($idx, $val){
    $this->_KanyusyaData[$idx]->setKeizoku($val);
   }
   public function updateSougaku($val){
-   $this->_Sougaku = $val;
+   $this->_Sougaku = intval($val);
+  }
+  public function updateShiharaiType($val){
+   if($val != 'クレジットカード' && $val != '銀行振込' && $val != '口座振替') return;
+   $this->_ShiharaiType = $val;
+  }
+  public function updateShiharaiKigen($val){
+   $_date = new Date($val);
+   $this->_ShiharaiKigen = $_date;
   }
   
+  /* 判定関数 */
   public function isTypeOyakata(){
    if($this->_Type == '一人親方代理' || $this->_Type == '一人親方加入者'){
     return true;
@@ -47,12 +64,15 @@
     return false;
    }
   }
-  
-  /*
-  public function addKanyusyaArray(array $nkd){
-   $this->_KanyusyaData = array_merge($this->_KanyusyaData, $nkd);
+  public function isFurikae(){
+   if($this->_Furikae == 'true'){
+    return true;
+   } else {
+    return false;
+   }
   }
-  */
+  
+
   public function getKanyusyaNum(){
    return count($this->_KanyusyaData);
   }
@@ -80,7 +100,7 @@
    }
   }
   private function _getNenkoRecordData_oyakatadairi(){
-   $_select = "Id,dairikaishamei__c";
+   $_select = "Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c";
    $_from = "nendokoshin__c";
    $_where = "dairimadokuchikaishabango__c = '$this->_No' AND Nendo__c = '2024' AND Type__c = '$this->_Type'";
    $_orderby = "";
@@ -91,11 +111,13 @@
    $_row = (array)$_result[0]['fields'];
    $this->_Id = $_result[0]['Id'];
    $this->_Name = $_row['dairikaishamei__c'];
+   $this->_Furikae = $_row['kofurikaishu__c'];
+   $this->_KozaJoho = $_row['KouzaJyouhou__c'];
    
    return true;
   }
   private function _getNenkoRecordData_oyakatakanyusya(){
-   $_select = "Id,shimeisei__c,shimeimei__c,genzainonichigaku__c,hokenryooshiharaisogaku__c";
+   $_select = "Id,shimeisei__c,shimeimei__c,genzainonichigaku__c,hokenryooshiharaisogaku__c,kofurikaishu__c,KouzaJyouhou__c";
    $_from = "nendokoshin__c";
    $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '2024' AND Type__c = '$this->_Type'";
    $_orderby = "";
@@ -106,6 +128,8 @@
    $_row = (array)$_result[0]['fields'];
    $this->_Id = $_result[0]['Id'];
    $this->_Name = $_row['shimeisei__c'].'　'.$_row['shimeimei__c'];
+   $this->_Furikae = $_row['kofurikaishu__c'];
+   $this->_KozaJoho = $_row['KouzaJyouhou__c'];
    
    return true;
   }
@@ -121,7 +145,7 @@
   }
   private function _getNenkoKanyusyaRecordData_oyakatadairi(){
    $_type = '一人親方加入者';
-   $_select = "Id,seirinumber__c";
+   $_select = "Id,seirinumber__c,kofurikaishu__c";
    $_from = "nendokoshin__c";
    $_where = "dairikaisha__c = '$this->_Id' AND Nendo__c = '2024' AND Type__c = '$_type'";
    $_orderby = "";
@@ -151,8 +175,9 @@
 
 
 
-
+/**********************************************************************/
 /* 加入者データ */
+/**********************************************************************/
  class NenkoKanyusyaData{
   private $_Type;
   private $_RecordTypeId;
@@ -162,6 +187,7 @@
   private $_Nichigaku;
   private $_Kingaku;
   private $_SanteiKisogaku;
+  private $_KozaJoho;
 
   private $_Keizoku;
   
@@ -179,6 +205,7 @@
   public function Kingaku(){return $this->_Kingaku;}
   public function Keizoku(){return $this->_Keizoku;}
   public function SanteiKisogaku(){return $this->_SanteiKisogaku;}
+  public function KozaJoho(){return $this->_KozaJoho;}
 
   /* 更新関数 */
   public function setKeizoku($val){
@@ -195,6 +222,7 @@
    $this->_SanteiKisogaku = $val;
   }
   
+  /* 判定関数 */
   public function isKeizoku(){
    if($this->_Keizoku == 'keizoku'){
     return true;
@@ -202,13 +230,14 @@
    return false;
   }
   
+  
   public function calcSanteiKisogaku(){
    $this->_SanteiKisogaku = $this->_Nichigaku*365;
   }
   
   /* SFから加入者年更レコード取得 */  
   public function getNenkoRecordData(){
-   $_select = "Id,shimeisei__c,shimeimei__c,genzainonichigaku__c,hokenryooshiharaisogaku__c";
+   $_select = "Id,shimeisei__c,shimeimei__c,genzainonichigaku__c,hokenryooshiharaisogaku__c,kofurikaishu__c,KouzaJyouhou__c";
    $_from = "nendokoshin__c";
    $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '2024' AND Type__c = '$this->_Type'";
    $_orderby = "";
@@ -220,6 +249,7 @@
    $this->_Name = $_row['shimeisei__c'].'　'.$_row['shimeimei__c'];
    $this->_Nichigaku = intval($_row['genzainonichigaku__c']);
    $this->_Kingaku = intval($_row['hokenryooshiharaisogaku__c']);
+   $this->_KozaJoho = $_row['KouzaJyouhou__c'];
    
    return true;
   }

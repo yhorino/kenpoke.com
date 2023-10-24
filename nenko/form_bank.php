@@ -268,7 +268,7 @@ $('#kigen_err').hide();
   <!-- https://www.sejuku.net/blog/104657 -->
    <div class="popup" id="kakunin_bank">
      <div class="content">
-      <img src="../mypage/image/symbol_a.png" alt="" id="symbol_a">
+      <img src="/nenko/img/symbol_a.png" alt="" id="symbol_a">
       <h2>お振込みのご注意</h2>
       <p class="p1">振込手数料は、お客様負担となります。<br>
        お振込み期限は、本日から3日以内です。<br>
@@ -308,7 +308,6 @@ $('#kigen_err').hide();
   <input type="hidden" name="shiharai_type" value="銀行振込">
 
   <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
-  <input type="hidden" name="nenko_kanyusya_data" value="<?php echo base64_encode($_SESSION['nenko_kanyusya_data']);?>">
 
   <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="次へすすむ">
  </form>

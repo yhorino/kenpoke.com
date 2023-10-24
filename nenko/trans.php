@@ -67,7 +67,16 @@
   }
   case 'kingaku':
   {
+   $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+
+   $nenko_data_unserialize->updateShiharaiType($_POST['shiharai_sel']);
+   if($nenko_data_unserialize->ShiharaiType == '銀行振込'){
+    $nenko_data_unserialize->updateShiharaiKigen($_POST['shiharai_day']);
+   } else {
+    $nenko_data_unserialize->updateShiharaiKigen('');
+   }
    
+   $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
    header('Location: done.php');
    break;
   }
