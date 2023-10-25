@@ -62,8 +62,8 @@
       <td><?php echo $keizoku_no;?></td>
       <td><?php echo $kdata->No();?></td>
       <td><?php echo $kdata->Name();?></td>
-      <td><?php echo number_format($kdata->Nichigaku());?> 円</td>
-      <td><?php echo number_format($kdata->Kingaku());?> 円</td>
+      <td><?php echo number_format($kdata->NichigakuSel());?> 円</td>
+      <td><?php echo number_format($kdata->KingakuSel());?> 円</td>
      </tr>
      <?php } ?>
      <?php } ?>

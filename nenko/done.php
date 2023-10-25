@@ -3,7 +3,8 @@
  header("Content-type: text/html;charset=utf-8");
  include_once('./class.php');
 
-  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize->updateNenkoRecordData();
 
  $box_title = '継続申込　受付完了';
  $header_title = '継続申込を受付しました';

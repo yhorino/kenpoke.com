@@ -35,10 +35,31 @@
    $_santei_goukei = 0;
    for($i=0;$i<$nenko_data_unserialize->getKanyusyaNum();$i++){
     /* 継続/脱退　状態更新 */
-    $nenko_data_unserialize->updateKanyusyaKeizoku($i, $_POST['keizokusel_'.$i]);
+    $nenko_data_unserialize->setKanyusyaKeizoku($i, $_POST['keizokusel_'.$i]);
+    /* 日額選択 */
+    $nenko_data_unserialize->setKanyusyaNichigakuSel($i, $_POST['sel_nichigaku'.$i]);
+    
+    $_kingaku = $nenko_data_unserialize->getKanyusyaData($i)->Kingaku();
+    switch($_POST['sel_nichigaku'.$i]){
+     case '3500':
+      {
+       $_kingaku = $nenko_data_unserialize->getKanyusyaData($i)->Kingaku3500();
+       break;
+      }
+     case '10000':
+      {
+       $_kingaku = $nenko_data_unserialize->getKanyusyaData($i)->Kingaku10000();
+       break;
+      }
+     default:
+      {
+       break;
+      }
+    }
     
     if($nenko_data_unserialize->getKanyusyaData($i)->isKeizoku() == true){
-     $_sougaku += $nenko_data_unserialize->getKanyusyaData($i)->Kingaku();
+     $nenko_data_unserialize->setKanyusyaKingakuSel($i, $_kingaku);
+     $_sougaku += $_kingaku;
      //$_santei_goukei += 
     }
     
@@ -46,7 +67,7 @@
    /* 合計金額の計算 */
    if($nenko_data_unserialize->isTypeOyakata() == true){
     /* 一人親方：保険料＋会費　の合計額 */
-    $nenko_data_unserialize->updateSougaku($_sougaku);
+    $nenko_data_unserialize->setSougaku($_sougaku);
    }
    if($nenko_data_unserialize->isTypeJimukumiai() == true){
     /* 事務組合： 
@@ -68,12 +89,12 @@
   case 'kingaku':
   {
    $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
-
-   $nenko_data_unserialize->updateShiharaiType($_POST['shiharai_sel']);
-   if($nenko_data_unserialize->ShiharaiType == '銀行振込'){
-    $nenko_data_unserialize->updateShiharaiKigen($_POST['shiharai_day']);
+   
+   $nenko_data_unserialize->setShiharaiType($_POST['shiharai_type']);
+   if($nenko_data_unserialize->ShiharaiType() == '銀行振込'){
+    $nenko_data_unserialize->setShiharaiKigen($_POST['shiharai_day']);
    } else {
-    $nenko_data_unserialize->updateShiharaiKigen('');
+    $nenko_data_unserialize->setShiharaiKigen('');
    }
    
    $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
@@ -82,8 +103,20 @@
   }
   case 'done':
   {
+   $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+   $returl = '';
+   if($nenko_data_unserialize->isTypeOyakata()){
+    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/top.php';
+   }
+   if($nenko_data_unserialize->isTypeJimukumiai()){
+    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/mypage/top.php';
+   }
+   $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
    
-   header('Location: debugstart.php');
+   //header('Location: '.$returl);
+   
+   header('Location: debugstart.php'); // DEBUG
+   
    break;
   }
  }

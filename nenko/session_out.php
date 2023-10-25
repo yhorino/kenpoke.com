@@ -18,7 +18,7 @@
  $flow_class1 = '';
  $flow_class2 = '';
  $flow_class3 = '';
- include_once('./header.php'); 
+ //include_once('./header.php'); 
  ?>
 
   
@@ -37,7 +37,7 @@
      長時間無操作だったため、セッションの有効期限が切れました。
     </p>
     
-    <a href="#" class="submit_button" id="submit_button" onclick="window.close();">閉じる</a>
+    <!--<a href="javascript:void(0);" class="submit_button" id="submit_button" onclick="open('', '_self', ''); window.close();">閉じる</a>-->
     
    </div>
   </div>

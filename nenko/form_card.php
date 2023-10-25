@@ -1,12 +1,13 @@
 <?php
   //$mode = -1; // DEBUG
-  
+  $mode = 0;
+
   if($mode == -1){
-   include "./pg_hash.php";
+   include "pg_hash.php";
    $seq_merchant_id='50310';
    $paygent_url = 'https://sandbox.paygent.co.jp/v/u/request';
   } else {
-   include "./pg_hash_h.php";   
+   include "pg_hash_h.php";   
    $seq_merchant_id='59965';
    $paygent_url = 'https://link.paygent.co.jp/v/u/request';
   }
@@ -67,7 +68,7 @@
  <input type="hidden" name="payment_class" value="<?php echo $payment_class;?>">
  <input type="hidden" name="use_card_conf_number" value="<?php echo $use_card_conf_number;?>">
  <input type="hidden" name="stock_card_mode" value="<?php echo $stock_card_mode;?>">
- <input type="hidden" name="customer_id" value="<?php echo $customer_id:?>">
+ <input type="hidden" name="customer_id" value="<?php echo $customer_id;?>">
  <input type="hidden" name="threedsecure_ryaku" value="<?php echo $threedsecure_ryaku;?>">
  <input type="hidden" name="sales_flg" value="">
  <input type="hidden" name="appendix" value="">
