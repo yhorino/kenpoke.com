@@ -9,7 +9,7 @@
 
  <form name="form" method="post" action="trans.php">
   <input type="hidden" name="pagename" value="kingaku">
-  <input type="hidden" name="shiharai_type" value="口座振替">
+  <input type="hidden" name="shiharai_type" value="<?php echo SHIHARAI_TYPE_FURIKAE;?>">
 
   <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
 

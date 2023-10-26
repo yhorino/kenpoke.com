@@ -7,6 +7,10 @@
 <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
 <script src="https://kit.fontawesome.com/a366e23f99.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="normalize.css">
-<link rel="stylesheet" href="colortable_oyakata.css">
+<?php if($nenko_data_unserialize->isTypeJimukumiai() == true){?>
+ <link rel="stylesheet" href="colortable_jimukumiai.css">
+<?php } else {?>
+ <link rel="stylesheet" href="colortable_oyakata.css">
+<?php } ?>
 <link rel="stylesheet" href="style.css">
 

@@ -24,7 +24,6 @@
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
- $logo_img = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
  $flow_class1 = 'flow_active';
  $flow_class2 = '';
  $flow_class3 = '';
@@ -65,19 +64,19 @@
       <table class="keizokusya_kingaku_table">
        <tr>
         <th>給付基礎日額</th>
-        <th>保険料等</th>
+        <th class="jimu_hide">保険料等</th>
        </tr>
        <tr id="row<?php echo $i;?>_now" class="row<?php echo $i;?>">
         <td><span class="nichigaku"><?php echo number_format($kdata->Nichigaku());?></span> 円</td>
-        <td><?php echo number_format($kdata->Kingaku());?> 円</td>
+        <td class="jimu_hide"><?php echo number_format($kdata->Kingaku());?> 円</td>
        </tr>
        <tr id="row<?php echo $i;?>_3500" class="row<?php echo $i;?>" style="display: none;">
         <td><span class="nichigaku">3,500</span> 円</td>
-        <td><?php echo number_format($kdata->Kingaku3500());?> 円</td>
+        <td class="jimu_hide"><?php echo number_format($kdata->Kingaku3500());?> 円</td>
        </tr>
        <tr id="row<?php echo $i;?>_10000" class="row<?php echo $i;?>" style="display: none;">
         <td><span class="nichigaku">10,000</span> 円</td>
-        <td><?php echo number_format($kdata->Kingaku10000());?> 円</td>
+        <td class="jimu_hide"><?php echo number_format($kdata->Kingaku10000());?> 円</td>
        </tr>
       </table>
       

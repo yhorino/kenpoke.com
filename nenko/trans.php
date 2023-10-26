@@ -6,10 +6,10 @@
 
  /* DEBUG */
  if(isset($_GET['debugstart'])){
-  if($_GET['debugstart'] == 1){$type = '一人親方代理';}
-  if($_GET['debugstart'] == 2){$type = '一人親方加入者';}
-  if($_GET['debugstart'] == 11){$type = '事務組合会社';}
-  if($_GET['debugstart'] == 12){$type = '事務組合加入者';}
+  if($_GET['debugstart'] == 1){$type = DATATYPE_OYAKATADAIRI;}
+  if($_GET['debugstart'] == 2){$type = DATATYPE_OYAKATAKANYUSYA;}
+  if($_GET['debugstart'] == 11){$type = DATATYPE_JIMUKAISYA;}
+  if($_GET['debugstart'] == 12){$type = DATATYPE_JIMUKANYUSYA;}
   $nenko_data = new NenkoData($type, $_GET['no']);
   $nenko_data->getNenkoRecordData();
   $nenko_data->getNenkoKanyusyaRecordData();
@@ -32,7 +32,9 @@
 
    /* 継続者確認 */
    $_sougaku = 0;
-   $_santei_goukei = 0;
+   $_santeikisogaku_goukei = 0;
+   $_kaihi_goukei = 0;
+   $_cardhakkou_goukei = 0;
    for($i=0;$i<$nenko_data_unserialize->getKanyusyaNum();$i++){
     /* 継続/脱退　状態更新 */
     $nenko_data_unserialize->setKanyusyaKeizoku($i, $_POST['keizokusel_'.$i]);
@@ -40,15 +42,18 @@
     $nenko_data_unserialize->setKanyusyaNichigakuSel($i, $_POST['sel_nichigaku'.$i]);
     
     $_kingaku = $nenko_data_unserialize->getKanyusyaData($i)->Kingaku();
+    $_santeikisogaku = $nenko_data_unserialize->getKanyusyaData($i)->SanteiKisogaku();
     switch($_POST['sel_nichigaku'.$i]){
      case '3500':
       {
        $_kingaku = $nenko_data_unserialize->getKanyusyaData($i)->Kingaku3500();
+       $_santeikisogaku = $nenko_data_unserialize->getKanyusyaData($i)->SanteiKisogaku3500();
        break;
       }
      case '10000':
       {
        $_kingaku = $nenko_data_unserialize->getKanyusyaData($i)->Kingaku10000();
+       $_santeikisogaku = $nenko_data_unserialize->getKanyusyaData($i)->SanteiKisogaku10000();
        break;
       }
      default:
@@ -60,7 +65,10 @@
     if($nenko_data_unserialize->getKanyusyaData($i)->isKeizoku() == true){
      $nenko_data_unserialize->setKanyusyaKingakuSel($i, $_kingaku);
      $_sougaku += $_kingaku;
-     //$_santei_goukei += 
+     $nenko_data_unserialize->setSanteiKisogakuSel($i, $_santeikisogaku);
+     $_santeikisogaku_goukei += $_santeikisogaku;
+     $_kaihi_goukei += $nenko_data_unserialize->getKanyusyaData($i)->Kaihi();
+     $_cardhakkou_goukei += $nenko_data_unserialize->getKanyusyaData($i)->CardHakkohiyo();
     }
     
    }
@@ -71,10 +79,14 @@
    }
    if($nenko_data_unserialize->isTypeJimukumiai() == true){
     /* 事務組合： 
-    ・日額×365×月数÷12＝1人当たりの算定基礎額
-    ・SUM（算定基礎額）　→切り捨てる
-    ・ここに料率をかける　→切り捨てる
+    ・日額×365＝1人当たりの算定基礎額
+    ・SUM（算定基礎額）×料率　→切り捨てる
     */
+    $_jimu_ryoritsu = $nenko_data_unserialize->Ryoritsu();
+    $_jimu_kaihi = $nenko_data_unserialize->Kaihi() + $_kaihi_goukei;
+    $_jimu_hokenryo = floor($_santeikisogaku_goukei * $_jimu_ryoritsu);
+    $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei;
+    $nenko_data_unserialize->setSougaku($_sougaku);
    }
    
    $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
@@ -91,7 +103,7 @@
    $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
    
    $nenko_data_unserialize->setShiharaiType($_POST['shiharai_type']);
-   if($nenko_data_unserialize->ShiharaiType() == '銀行振込'){
+   if($nenko_data_unserialize->ShiharaiType() == SHIHARAI_TYPE_BANK){
     $nenko_data_unserialize->setShiharaiKigen($_POST['shiharai_day']);
    } else {
     $nenko_data_unserialize->setShiharaiKigen('');
@@ -106,10 +118,10 @@
    $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
    $returl = '';
    if($nenko_data_unserialize->isTypeOyakata()){
-    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/top.php';
+    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/';
    }
    if($nenko_data_unserialize->isTypeJimukumiai()){
-    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/mypage/top.php';
+    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/';
    }
    $_SESSION['nenko_data'] = serialize($nenko_data_unserialize);
    

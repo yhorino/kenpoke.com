@@ -43,7 +43,6 @@
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
- $logo_img = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
  $flow_class1 = '';
  $flow_class2 = '';
  $flow_class3 = 'flow_active';

@@ -305,7 +305,7 @@ $('#kigen_err').hide();
   </div>
   
   <input type="hidden" name="pagename" value="kingaku">
-  <input type="hidden" name="shiharai_type" value="銀行振込">
+  <input type="hidden" name="shiharai_type" value="<?php echo SHIHARAI_TYPE_BANK;?>">
 
   <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
 

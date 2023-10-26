@@ -24,7 +24,6 @@
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
- $logo_img = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
  $flow_class1 = '';
  $flow_class2 = 'flow_active';
  $flow_class3 = '';
@@ -49,7 +48,7 @@
       <th>会員番号</th>
       <th>氏名</th>
       <th>給付基礎日額</th>
-      <th>お支払総額</th>
+      <th class="jimu_hide">お支払総額</th>
      </tr>
      <?php 
      $keizoku_no = 0;
@@ -63,7 +62,7 @@
       <td><?php echo $kdata->No();?></td>
       <td><?php echo $kdata->Name();?></td>
       <td><?php echo number_format($kdata->NichigakuSel());?> 円</td>
-      <td><?php echo number_format($kdata->KingakuSel());?> 円</td>
+      <td class="jimu_hide"><?php echo number_format($kdata->KingakuSel());?> 円</td>
      </tr>
      <?php } ?>
      <?php } ?>
@@ -100,9 +99,9 @@
      <span class=""></span>
     </h3>
     <div class="shiharai_buttons_box">
-     <label class="shiharai_button" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="クレジットカード" checked>クレジットカード</label>
-     <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="銀行振込">銀行振込</label>
-     <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="口座振替">口座振替</label>
+     <label class="shiharai_button" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
+     <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="<?php echo SHIHARAI_TYPE_BANK;?>">銀行振込</label>
+     <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="<?php echo SHIHARAI_TYPE_FURIKAE;?>">口座振替</label>
     </div>
    
     <div id="shiharai_card_box" class="shiharai_card_box">
@@ -147,16 +146,16 @@
     $sel = $('input[name="shiharai_sel"]:checked').val();
     
     disp_init();
-    if($sel == 'クレジットカード'){
+    if($sel == '<?php echo SHIHARAI_TYPE_CARD;?>'){
      $('#shiharai_card_box').show();
      return;
     }
-    if($sel == '銀行振込'){
+    if($sel == '<?php echo SHIHARAI_TYPE_BANK;?>'){
      $('#shiharai_bank_box').show();
      $('#kakunin_bank').show()
      return;
     }
-    if($sel == '口座振替'){
+    if($sel == '<?php echo SHIHARAI_TYPE_FURIKAE;?>'){
      $('#shiharai_furikae_box').show();
      return;
     }

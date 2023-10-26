@@ -1,32 +1,47 @@
 <?php
-  //$mode = -1; // DEBUG
-  $mode = 0;
+  $mode = -1; // DEBUG
+  //$mode = 0;
+
+  if($nenko_data_unserialize->isTypeOyakata() == true){
+   $merchant_name = '一人親方労災保険ＲＪＣ';
+   $payment_detail = '一人親方年度更新';
+   $payment_detail_kana = 'ﾋﾄﾘｵﾔｶﾀﾈﾝﾄﾞｺｳｼﾝ';
+   $_seq_merchant_id_test='50310';
+   $_seq_merchant_id='59965';
+   $toiawase = '一人親方労災保険RJC（0120-931-519）';
+   $banner_url = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
+  } else {
+   $merchant_name = '労働保険事務組合ＲＪＣ';
+   $payment_detail = '事務組合年度更新';
+   $payment_detail_kana = 'ｼﾞﾑｸﾐｱｲﾈﾝﾄﾞｺｳｼﾝ';
+   $_seq_merchant_id_test='52462';
+   $_seq_merchant_id='62094';
+   $toiawase = '労働保険事務組合RJC（0120-855-865）';
+   $banner_url = 'https://www.xn--y5q0r2lqcz91qdrc.com/wp-content/uploads/2023/05/logo_jimukumiai.png';
+  }
 
   if($mode == -1){
    include "pg_hash.php";
-   $seq_merchant_id='50310';
+   $seq_merchant_id=$_seq_merchant_id_test;
    $paygent_url = 'https://sandbox.paygent.co.jp/v/u/request';
   } else {
-   include "pg_hash_h.php";   
-   $seq_merchant_id='59965';
+   include "pg_hash_h.php";
+   $seq_merchant_id=$_seq_merchant_id;
    $paygent_url = 'https://link.paygent.co.jp/v/u/request';
   }
 
-  $trading_id = rand(0,99999999);/* 後ろに番号をつける */
+  $trading_id = rand(0,99999999).$nenko_data_unserialize->No();
   $payment_type = '02';
   $fix_params = '';
-  $id = '30095';
+  $id = $nenko_data_unserialize->Sougaku();
   $payment_term_day='';
   $payment_term_min='';
   $payment_class='0';
   $use_card_conf_number='0';
-/*
-  $customer_id=$_SESSION['row_nk_madoguchi']['dairinenkotaishoninzu__c'];
+  $customer_id=$nenko_data_unserialize->CustomerId();
   if($customer_id == ''){
-   $_SESSION['row_nk_madoguchi']['dairinenkotaishoninzu__c'] = rand(0,99999999);
-   $customer_id=$_SESSION['row_nk_madoguchi']['dairinenkotaishoninzu__c'];
+   $customer_id=$trading_id;
   }
-  */
   $threedsecure_ryaku='1';
   $stock_card_mode = 2;
 
@@ -34,7 +49,7 @@
 ?>
 
 <form name="form" method="post" action="<?php echo $paygent_url;?>">
- <input type="hidden" name="shiharai_type" value="クレジットカード">
+ <input type="hidden" name="shiharai_type" value="<?php echo SHIHARAI_TYPE_CARD;?>">
 
  <!-- 共通 -->
  <input type="hidden" name="trading_id" value="<?php echo $trading_id;?>">
@@ -43,9 +58,9 @@
  <input type="hidden" name="id" value="<?php echo $id;?>">
  <input type="hidden" name="hc" value="<?php echo $hash;?>">
  <input type="hidden" name="seq_merchant_id" value="<?php echo $seq_merchant_id;?>">
- <input type="hidden" name="merchant_name" value="一人親方労災保険ＲＪＣ">
- <input type="hidden" name="payment_detail" value="一人親方年度更新">
- <input type="hidden" name="payment_detail_kana" value="ﾋﾄﾘｵﾔｶﾀﾈﾝﾄﾞｺｳｼﾝ">
+ <input type="hidden" name="merchant_name" value="<?php echo $merchant_name;?>">
+ <input type="hidden" name="payment_detail" value="<?php echo $payment_detail;?>">
+ <input type="hidden" name="payment_detail_kana" value="<?php echo $payment_detail_kana;?>">
  <input type="hidden" name="payment_term_day" value="<?php echo $payment_term_day;?>">
  <input type="hidden" name="payment_term_min" value="<?php echo $payment_term_min;?>">
  <input type="hidden" name="banner_url" value="">
@@ -86,7 +101,7 @@
  <input type="submit" class="nenko_next button shadow" 　id="shiharai_card_next_button" name="shiharai_card_next_button" value="決済画面へすすむ">
  </div>
 
- <p class="card_submit_info">※ クレジットカード決済の画面から進まない場合は、<?php if($nenko_data_unserialize->isTypeOyakata() == true){echo '一人親方労災保険RJC（0120-931-519）';} else {echo '労働保険事務組合RJC（0120-855-865）';}?>までお電話ください。
+ <p class="card_submit_info">※ クレジットカード決済の画面から進まない場合は、<?php echo $toiawase;?>までお電話ください。
  </p>
 
 </form>
