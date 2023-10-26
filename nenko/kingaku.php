@@ -3,7 +3,9 @@
  header("Content-type: text/html;charset=utf-8");
  include_once('./class.php');
 
-  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ include('./session_check.php');
+
 ?>
 
 <!doctype html>
@@ -22,7 +24,6 @@
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
- $logo_img = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
  $flow_class1 = '';
  $flow_class2 = 'flow_active';
  $flow_class3 = '';
@@ -47,7 +48,7 @@
       <th>会員番号</th>
       <th>氏名</th>
       <th>給付基礎日額</th>
-      <th>お支払総額</th>
+      <th class="jimu_hide">お支払総額</th>
      </tr>
      <?php 
      $keizoku_no = 0;
@@ -60,8 +61,8 @@
       <td><?php echo $keizoku_no;?></td>
       <td><?php echo $kdata->No();?></td>
       <td><?php echo $kdata->Name();?></td>
-      <td><?php echo number_format($kdata->Nichigaku());?> 円</td>
-      <td><?php echo number_format($kdata->Kingaku());?> 円</td>
+      <td><?php echo number_format($kdata->NichigakuSel());?> 円</td>
+      <td class="jimu_hide"><?php echo number_format($kdata->KingakuSel());?> 円</td>
      </tr>
      <?php } ?>
      <?php } ?>
@@ -70,16 +71,16 @@
     <div class="keizokusya_mitsumori_box">
      <div class="keizokusya_mitsumori_sougaku">
       <span class="keizokusya_mitsumori_sougaku_title">保険料等のお支払い総額</span>
-      <span class="keizokusya_mitsumori_sougaku_kingaku">30,095 円</span>
+      <span class="keizokusya_mitsumori_sougaku_kingaku"><?php echo number_format($nenko_data_unserialize->Sougaku());?> 円</span>
      </div>
      <div class="keizokusya_mitsumori_info">
       <div class="keizokusya_mitsumori_info_line">
        <span class="keizokusya_mitsumori_info_line_title">継続期間</span>
-       <span class="keizokusya_mitsumori_info_line_text">2023年4月1日　～　2024年3月31日</span>      
+       <span class="keizokusya_mitsumori_info_line_text">2024年4月1日　～　2025年3月31日</span>      
       </div>
       <div class="keizokusya_mitsumori_info_line">
        <span class="keizokusya_mitsumori_info_line_title">継続対象者</span>
-       <span class="keizokusya_mitsumori_info_line_text">1 名</span>
+       <span class="keizokusya_mitsumori_info_line_text"><?php echo $nenko_data_unserialize->getKeizokusyaNum();?> 名</span>
       </div>
      </div>
      <p class="keizokusya_mitsumori_addinfo">※ お支払総額には会費、保険料が含まれています。</p>
@@ -97,11 +98,10 @@
      <span class=""></span>
      <span class=""></span>
     </h3>
-    
     <div class="shiharai_buttons_box">
-     <label class="shiharai_button"><input type="radio" name="shiharai_sel" id="shiharai_card" value="クレジットカード" checked>クレジットカード</label>
-     <label class="shiharai_button"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="銀行振込">銀行振込</label>
-     <label class="shiharai_button"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="口座振替">口座振替</label>
+     <label class="shiharai_button" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
+     <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="<?php echo SHIHARAI_TYPE_BANK;?>">銀行振込</label>
+     <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="<?php echo SHIHARAI_TYPE_FURIKAE;?>">口座振替</label>
     </div>
    
     <div id="shiharai_card_box" class="shiharai_card_box">
@@ -118,35 +118,52 @@
     
   </div>
   
-   
+  </div>
  </div>
   
  
 <?php include_once('./footer.php'); ?>
  
  <script>
+  $furikae = <?php if($nenko_data_unserialize->isFurikae() == true){echo 'true';} else {echo 'false';}?>;
   $(function(){
    
    disp_init();
-   $('#shiharai_card_box').show();
+   $('#kingaku_box_shiharai').hide();
+   
+   if($furikae == true){
+    $('#shiharai_furikae_box').show();    
+    $('#shiharai_card_label').hide();
+    $('#shiharai_bank_label').hide();
+    $('#shiharai_furikae').prop('checked', true);
+    $('.shiharai_buttons_box').addClass('buttons_furikae');
+   } else {
+    $('#shiharai_card_box').show();
+    $('#shiharai_furikae_label').hide();
+   }
    
    $('input[name="shiharai_sel"]').change(function(){
     $sel = $('input[name="shiharai_sel"]:checked').val();
     
     disp_init();
-    if($sel == 'クレジットカード'){
+    if($sel == '<?php echo SHIHARAI_TYPE_CARD;?>'){
      $('#shiharai_card_box').show();
      return;
     }
-    if($sel == '銀行振込'){
+    if($sel == '<?php echo SHIHARAI_TYPE_BANK;?>'){
      $('#shiharai_bank_box').show();
      $('#kakunin_bank').show()
      return;
     }
-    if($sel == '口座振替'){
+    if($sel == '<?php echo SHIHARAI_TYPE_FURIKAE;?>'){
      $('#shiharai_furikae_box').show();
      return;
     }
+   });
+   
+   $('input[name="show_shiharai_button"]').click(function(){
+    $('#kingaku_box_shiharai').show();
+    $(this).hide();
    });
    
   });

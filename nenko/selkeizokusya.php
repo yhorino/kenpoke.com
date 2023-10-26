@@ -3,7 +3,9 @@
  header("Content-type: text/html;charset=utf-8");
  include_once('./class.php');
 
-  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ include('./session_check.php');
+
 ?>
 
 <!doctype html>
@@ -22,7 +24,6 @@
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
- $logo_img = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
  $flow_class1 = 'flow_active';
  $flow_class2 = '';
  $flow_class3 = '';
@@ -46,11 +47,11 @@
     <?php 
     for($i=0;$i<$nenko_data_unserialize->getKanyusyaNum();$i++){
      $kdata = $nenko_data_unserialize->getKanyusyaData($i);
-     $sel1=''; $sel2='';
+     $sel1=''; $sel2=''; $dattai_class='';
      if($kdata->isKeizoku()){ $sel1 = 'checked';}
-     else { $sel2 = 'checked';}
+     else { $sel2 = 'checked'; $dattai_class='dattai';}
     ?>
-    <div class="keizokusya_itembox">
+    <div class="keizokusya_itembox <?php echo $dattai_class;?>">
      <div class="keizokusya_itembox_left">
       <span class="keizokusya_no"><?php echo $kdata->No();?></span>
       <span class="keizokusya_name"><?php echo $kdata->Name();?></span>
@@ -63,24 +64,35 @@
       <table class="keizokusya_kingaku_table">
        <tr>
         <th>給付基礎日額</th>
-        <th>保険料等</th>
+        <th class="jimu_hide">保険料等</th>
        </tr>
-       <tr>
-        <td><?php echo number_format($kdata->Nichigaku());?> 円</td>
-        <td><?php echo number_format($kdata->Kingaku());?> 円</td>
+       <tr id="row<?php echo $i;?>_now" class="row<?php echo $i;?>">
+        <td><span class="nichigaku"><?php echo number_format($kdata->Nichigaku());?></span> 円</td>
+        <td class="jimu_hide"><?php echo number_format($kdata->Kingaku());?> 円</td>
+       </tr>
+       <tr id="row<?php echo $i;?>_3500" class="row<?php echo $i;?>" style="display: none;">
+        <td><span class="nichigaku">3,500</span> 円</td>
+        <td class="jimu_hide"><?php echo number_format($kdata->Kingaku3500());?> 円</td>
+       </tr>
+       <tr id="row<?php echo $i;?>_10000" class="row<?php echo $i;?>" style="display: none;">
+        <td><span class="nichigaku">10,000</span> 円</td>
+        <td class="jimu_hide"><?php echo number_format($kdata->Kingaku10000());?> 円</td>
        </tr>
       </table>
+      
+      <input type="hidden" name="sel_nichigaku<?php echo $i;?>" value="<?php echo $kdata->Nichigaku();?>">
+      
       <div class="change_nichigaku_box">
        
        <div id="nichigaku_title<?php echo $i;?>" class="change_nichigaku_title" onclick="change_nichigaku_title_click('<?php echo $i;?>');">給付基礎日額を変更する ▼</div>
        
        <div class="change_nichigaku_body">
         
-        <label id="cnb<?php echo $i;?>_3500" class="change_nichigaku_button buttonA" ><input type="radio" name="change_nichigaku<?php echo $i;?>" value="3500">3,500円</label>
+        <label id="cnb<?php echo $i;?>_3500" class="change_nichigaku_button buttonA" onclick="change_nichigaku_button_click(<?php echo $i;?>,'3500');"><input type="radio" name="change_nichigaku<?php echo $i;?>" value="3500">3,500円</label>
         
-        <label id="cnb<?php echo $i;?>_10000" class="change_nichigaku_button buttonB " onclick="change_nichigaku_button_click('cnb<?php echo $i;?>_10000');"><input type="radio" name="change_nichigaku<?php echo $i;?>" value="10000" >10,000円</label>
+        <label id="cnb<?php echo $i;?>_10000" class="change_nichigaku_button buttonB " onclick="change_nichigaku_button_click(<?php echo $i;?>,'10000');"><input type="radio" name="change_nichigaku<?php echo $i;?>" value="10000" >10,000円</label>
         
-        <label id="cnb<?php echo $i;?>_now" class="change_nichigaku_button buttonC" onclick="change_nichigaku_button_click('cnb<?php echo $i;?>_now');"><input type="radio" name="change_nichigaku<?php echo $i;?>" value="<?php echo $kdata->Nichigaku();?>" checked>現在の日額　<?php echo number_format($kdata->Nichigaku());?>円</label>
+        <label id="cnb<?php echo $i;?>_now" class="change_nichigaku_button buttonC" onclick="change_nichigaku_button_click(<?php echo $i;?>,'now');"><input type="radio" name="change_nichigaku<?php echo $i;?>" value="<?php echo $kdata->Nichigaku();?>" checked>現在の日額　<?php echo number_format($kdata->Nichigaku());?>円</label>
         
        </div>
       
@@ -93,7 +105,7 @@
    
    <div class="keizokusya_infobox">
     <div class="keizokusya_infobox_title">
-     年度途中の日額変更はできません。<br>ご確認ください。
+     <img src="/nenko/img/symbol018.png" alt="" class="keizokusya_infobox_title_icon"><span class="keizokusya_infobox_title_text">年度途中の日額変更はできません。<br>ご確認ください。</span>
     </div>
     <div class="keizokusya_infobox_body">
      ご加入者さまから「日額を変更したい。次の現場は日額10,000円以上でないと入場できないと言われた」とお電話をいただく事例がございます。<br>
@@ -118,9 +130,14 @@
 <?php include_once('./footer.php'); ?>
  
  <script>
+  // ページが読み込まれたら、チェックボックスの状態を初期化する
+  window.addEventListener('load', function() {
+    $('input[name="info_check"]').prop('checked', false);
+  });
+  
   $(function(){
    $('.change_nichigaku_body').hide();
-   $('input[name="info_check"]').prop('checked', false);
+   //$('input[name="info_check"]').prop('checked', false);
    
    $('input[name="info_check"]').click(function(){
     if($(this).prop('checked') == true){
@@ -129,9 +146,26 @@
      $('input[name="submit_button"]').prop('disabled', true);
     }
    });
+   $('.keizokusel_button input').click(function(){
+    $(this).parents('.keizokusya_itembox').removeClass('dattai');
+    $val = $(this).val();
+    if($val == 'dattai'){
+     $(this).parents('.keizokusya_itembox').addClass('dattai');
+    }
+   });
   });
   function change_nichigaku_title_click($idx){
    $('#nichigaku_title'+$idx).next('.change_nichigaku_body').toggle();
+  }
+  function change_nichigaku_button_click($idx, $name){
+   $rowclass = '.row'+$idx;
+   $rowid = '#row'+$idx+'_'+$name;
+   $($rowclass).hide();
+   $($rowid).show();
+   
+   $nichigaku = $($rowid+" .nichigaku").text();
+   $nichigaku = $nichigaku.replace(',','');
+   $('input[name="sel_nichigaku'+$idx+'"]').val($nichigaku);
   }
  </script>
 </body>

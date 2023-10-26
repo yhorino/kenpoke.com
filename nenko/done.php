@@ -3,7 +3,8 @@
  header("Content-type: text/html;charset=utf-8");
  include_once('./class.php');
 
-  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
+ $nenko_data_unserialize->updateNenkoRecordData();
 
  $box_title = '継続申込　受付完了';
  $header_title = '継続申込を受付しました';
@@ -42,7 +43,6 @@
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
- $logo_img = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
  $flow_class1 = '';
  $flow_class2 = '';
  $flow_class3 = 'flow_active';
