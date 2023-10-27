@@ -4,22 +4,32 @@
 
  include_once('./class.php');
 
- /* DEBUG */
- if(isset($_GET['debugstart'])){
-  if($_GET['debugstart'] == 1){$type = DATATYPE_OYAKATADAIRI;}
-  if($_GET['debugstart'] == 2){$type = DATATYPE_OYAKATAKANYUSYA;}
-  if($_GET['debugstart'] == 11){$type = DATATYPE_JIMUKAISYA;}
-  if($_GET['debugstart'] == 12){$type = DATATYPE_JIMUKANYUSYA;}
+ /* 入口 */
+ if(isset($_GET['type'])){
+
+  if($_GET['type'] == 1){$type = DATATYPE_OYAKATADAIRI;}
+  if($_GET['type'] == 2){$type = DATATYPE_OYAKATAKANYUSYA;}
+  if($_GET['type'] == 11){$type = DATATYPE_JIMUKAISYA;}
+  if($_GET['type'] == 12){$type = DATATYPE_JIMUKANYUSYA;}
+  setcookie('type', $type);
   $nenko_data = new NenkoData($type, $_GET['no']);
-  $nenko_data->getNenkoRecordData();
-  $nenko_data->getNenkoKanyusyaRecordData();
+  $ret = $nenko_data->getNenkoRecordData();
+  if($ret == false){
+   header('Location: error.php');
+   break;
+  }
+  $ret = $nenko_data->getNenkoKanyusyaRecordData();
+  if($ret == false){
+   header('Location: error.php');
+   break;
+  }
 
   $_SESSION['nenko_data'] = serialize($nenko_data);
 
   header('Location: selkeizokusya.php');
   exit;
+
  }
- /* DEBUG */
 
 
  // 再POSTされたシリアライズ済みオブジェクトデータをセッション変数に入れなおす
@@ -129,6 +139,10 @@
    
    header('Location: debugstart.php'); // DEBUG
    
+   break;
+  }
+  default:{
+   header('Location: error.php');
    break;
   }
  }

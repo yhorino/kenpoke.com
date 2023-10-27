@@ -15,7 +15,7 @@
 <head>
 <?php include_once('./gtm_head.php'); ?>
 <?php 
- $title = 'セッション有効期限切れ　｜　年度更新手続';
+ $title = 'エラーが発生しました　｜　年度更新手続';
  $description = '';
  include_once('./head_settings.php');
  ?>
@@ -34,12 +34,12 @@
 
   
  <div class="outer_box inner">
-  <h2 class="outer_box_title">セッション有効期限切れ</h2>
+  <h2 class="outer_box_title">エラーが発生しました</h2>
   <div class="outer_box_body">
    
    <div class="kingaku_box">
     <p>
-     長時間無操作だったため、セッションの有効期限が切れました。
+     エラーが発生しました。お手数ですが、もう一度最初からやり直してください。
     </p>
     
     <a href="<?php echo $top_url;?>" class="submit_button" id="submit_button">トップページへ</a>

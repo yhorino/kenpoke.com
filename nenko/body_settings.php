@@ -7,10 +7,17 @@
 <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
 <script src="https://kit.fontawesome.com/a366e23f99.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="normalize.css">
-<?php if($nenko_data_unserialize->isTypeJimukumiai() == true){?>
- <link rel="stylesheet" href="colortable_jimukumiai.css">
-<?php } else {?>
- <link rel="stylesheet" href="colortable_oyakata.css">
-<?php } ?>
+<?php
+ $_css = '';
+ if(isset($_COOKIE['type'])){
+  if($_COOKIE['type'] == DATATYPE_OYAKATADAIRI || $_COOKIE['type'] == DATATYPE_OYAKATAKANYUSYA){
+   $_css = 'colortable_oyakata.css';
+  }
+  if($_COOKIE['type'] == DATATYPE_JIMUKAISYA || $_COOKIE['type'] == DATATYPE_JIMUKANYUSYA){
+   $_css = 'colortable_jimukumiai.css';
+  }
+ }
+?>
+<link rel="stylesheet" href="<?php echo $_css;?>">
 <link rel="stylesheet" href="style.css">
 
