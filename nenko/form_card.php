@@ -30,7 +30,7 @@
    $paygent_url = 'https://link.paygent.co.jp/v/u/request';
   }
 
-  $trading_id = rand(0,99999999).$nenko_data_unserialize->No();
+  $trading_id = $nenko_data_unserialize->TradingId();
   $payment_type = '02';
   $fix_params = '';
   $id = $nenko_data_unserialize->Sougaku();
@@ -39,9 +39,6 @@
   $payment_class='0';
   $use_card_conf_number='0';
   $customer_id=$nenko_data_unserialize->CustomerId();
-  if($customer_id == ''){
-   $customer_id=$trading_id;
-  }
   $threedsecure_ryaku='1';
   $stock_card_mode = 2;
 
