@@ -2,23 +2,13 @@
   $mode = -1; // DEBUG
   //$mode = 0;
 
-  if($nenko_data_unserialize->isTypeOyakata() == true){
-   $merchant_name = '一人親方労災保険ＲＪＣ';
-   $payment_detail = '一人親方年度更新';
-   $payment_detail_kana = 'ﾋﾄﾘｵﾔｶﾀﾈﾝﾄﾞｺｳｼﾝ';
-   $_seq_merchant_id_test='50310';
-   $_seq_merchant_id='59965';
-   $toiawase = '一人親方労災保険RJC（0120-931-519）';
-   $banner_url = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
-  } else {
-   $merchant_name = '労働保険事務組合ＲＪＣ';
-   $payment_detail = '事務組合年度更新';
-   $payment_detail_kana = 'ｼﾞﾑｸﾐｱｲﾈﾝﾄﾞｺｳｼﾝ';
-   $_seq_merchant_id_test='52462';
-   $_seq_merchant_id='62094';
-   $toiawase = '労働保険事務組合RJC（0120-855-865）';
-   $banner_url = 'https://www.xn--y5q0r2lqcz91qdrc.com/wp-content/uploads/2023/05/logo_jimukumiai.png';
-  }
+  $merchant_name = '一人親方労災保険ＲＪＣ';
+  $payment_detail = '一人親方年度更新';
+  $payment_detail_kana = 'ﾋﾄﾘｵﾔｶﾀﾈﾝﾄﾞｺｳｼﾝ';
+  $_seq_merchant_id_test='50310';
+  $_seq_merchant_id='59965';
+  $toiawase = '一人親方労災保険RJC（0120-931-519）';
+  $banner_url = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/logo_img/logo_hitorioyakata.png';
 
   if($mode == -1){
    include "pg_hash.php";

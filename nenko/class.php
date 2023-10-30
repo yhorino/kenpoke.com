@@ -70,18 +70,6 @@
   public function TradingId(){return $this->_TradingId;}
   
   /* 更新関数 */
-  public function setKanyusyaKeizoku($idx, $val){
-   $this->_KanyusyaData[$idx]->setKeizoku($val);
-  }
-  public function setKanyusyaNichigakuSel($idx, $val){
-   $this->_KanyusyaData[$idx]->setNichigakuSel($val);
-  }
-  public function setKanyusyaKingakuSel($idx, $val){
-   $this->_KanyusyaData[$idx]->setKingakuSel($val);
-  }
-  public function setSanteiKisogakuSel($idx, $val){
-   $this->_KanyusyaData[$idx]->setSanteiKisogakuSel($val);
-  }
   public function setSougaku($val){
    $this->_Sougaku = intval($val);
   }
@@ -89,6 +77,7 @@
    if($val != SHIHARAI_TYPE_CARD && $val != SHIHARAI_TYPE_BANK && $val != SHIHARAI_TYPE_FURIKAE) return;
    $this->_ShiharaiType = $val;
    for($i=0;$i<$this->getKanyusyaNum();$i++){
+    $this->getKanyusyaData($i)->setShiharaiType('');
     if($this->getKanyusyaData($i)->isKeizoku()){
      $this->getKanyusyaData($i)->setShiharaiType($val);
     }
@@ -98,6 +87,7 @@
    $_date = date('Y-m-d', strtotime($val));
    $this->_ShiharaiKigen = $_date;
    for($i=0;$i<$this->getKanyusyaNum();$i++){
+    $this->getKanyusyaData($i)->setShiharaiKigen('');
     if($this->getKanyusyaData($i)->isKeizoku()){
      $this->getKanyusyaData($i)->setShiharaiKigen($_date);
     }
@@ -142,6 +132,11 @@
     }
    }
    return $count;
+  }
+  public function getKozaJohoMasked(){
+   $_kj = $this->_KozaJoho;
+   $_kj_mask = preg_replace('/番号：\K\b(\d{4})(\d+)\b/', '****$2', $_kj);
+   return $_kj_mask;
   }
   
   /* SFから代理年更レコード取得 */  
@@ -387,11 +382,9 @@
   private $_Kingaku;
   private $_Kingaku3500;
   private $_Kingaku10000;
-  private $_KingakuSel;
   private $_SanteiKisogaku;
   private $_SanteiKisogaku3500;
   private $_SanteiKisogaku10000;
-  private $_SanteiKisogakuSel;
   private $_KozaJoho;
   private $_Kaihi;
   private $_ShiharaiType;
@@ -417,12 +410,7 @@
   public function Kingaku(){return $this->_Kingaku;}
   public function Kingaku3500(){return $this->_Kingaku3500;}
   public function Kingaku10000(){return $this->_Kingaku10000;}
-  public function KingakuSel(){return $this->_KingakuSel;}
   public function Keizoku(){return $this->_Keizoku;}
-  public function SanteiKisogaku(){return $this->_SanteiKisogaku;}
-  public function SanteiKisogaku3500(){return $this->_SanteiKisogaku3500;}
-  public function SanteiKisogaku10000(){return $this->_SanteiKisogaku10000;}
-  public function SanteiKisogakuSel(){return $this->_SanteiKisogakuSel;}
   public function KozaJoho(){return $this->_KozaJoho;}
   public function Kaihi(){return $this->_Kaihi;}
   public function CardHakkohiyo(){return $this->_CardHakkohiyo;}
@@ -443,12 +431,6 @@
   public function setNichigakuSel($val){
    $this->_NichigakuSel = $val;
   }
-  public function setKingakuSel($val){
-   $this->_KingakuSel = $val;
-  }
-  public function setSanteiKisogakuSel($val){
-   $this->_SanteiKisogakuSel = $val;
-  }
   public function setShiharaiType($val){
    if($val != SHIHARAI_TYPE_CARD && $val != SHIHARAI_TYPE_BANK && $val != SHIHARAI_TYPE_FURIKAE) return;
    $this->_ShiharaiType = $val;
@@ -466,6 +448,26 @@
    return false;
   }
   
+  public function getKingakuSel(){
+   $_kingakusel = $this->_Kingaku;
+   if(intval($this->_NichigakuSel) == 3500) {
+    $_kingakusel = $this->_Kingaku3500;
+   }
+   if(intval($this->_NichigakuSel) == 10000) {
+    $_kingakusel = $this->_Kingaku10000;
+   }
+   return $_kingakusel;
+  }
+  public function getSanteiKisogakuSel(){
+   $_santeikisogakusel = $this->_SanteiKisogaku;
+   if(intval($this->_NichigakuSel) == 3500) {
+    $_santeikisogakusel = $this->_SanteiKisogaku3500;
+   }
+   if(intval($this->_NichigakuSel) == 10000) {
+    $_santeikisogakusel = $this->_SanteiKisogaku10000;
+   }
+   return $_santeikisogakusel;
+  }
   
   /* SFから加入者年更レコード取得 */  
   public function getNenkoRecordData(){
@@ -525,7 +527,7 @@
      $updateitems=array_merge($updateitems, array('nyukinkigen__c'=>$_kigen_datetime));
     }
     if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
-     $updateitems=array_merge($updateitems, array('nyukinkingaku__c'=>$this->_KingakuSel));
+     $updateitems=array_merge($updateitems, array('nyukinkingaku__c'=>$this->getKingakuSel()));
      $updateitems=array_merge($updateitems, array('nyukinkakuninzumi__c'=>true));
      $updateitems=array_merge($updateitems, array('trading_id__c'=>$this->_TradingId));
     }

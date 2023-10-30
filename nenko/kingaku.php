@@ -38,11 +38,11 @@
    <div class="kingaku_box" id="kingaku_box_mitsumori">
     <h3 class="keizokusyalist_header">
      <span class="keizokusyalist_header_title">継続される方：<?php echo $nenko_data_unserialize->getKeizokusyaNum();?>名</span>
-     <span class="keizokusyalist_header_info">※ 明細が必要な方は、この画面を印刷ください。</span>
-     <span class="keizokusyalist_header_button" onclick="window.print()">印刷する</span>
+     <!--<span class="keizokusyalist_header_info">※ 明細が必要な方は、この画面を印刷ください。</span>
+     <span class="keizokusyalist_header_button" onclick="window.print()">印刷する</span>-->
     </h3>
     
-    <table class="keizokusyalist_table">
+    <table class="keizokusyalist_table show_pc">
      <tr>
       <th>No.</th>
       <th>会員番号</th>
@@ -62,7 +62,31 @@
       <td><?php echo $kdata->No();?></td>
       <td><?php echo $kdata->Name();?></td>
       <td><?php echo number_format($kdata->NichigakuSel());?> 円</td>
-      <td class="jimu_hide"><?php echo number_format($kdata->KingakuSel());?> 円</td>
+      <td class="jimu_hide"><?php echo number_format($kdata->getKingakuSel());?> 円</td>
+     </tr>
+     <?php } ?>
+     <?php } ?>
+    </table>
+    
+    <table class="keizokusyalist_table show_sp">
+     <tr>
+      <th>No.</th>
+      <th>会員番号・氏名</th>
+      <th>給付基礎日額</th>
+      <th class="jimu_hide">お支払総額</th>
+     </tr>
+     <?php 
+     $keizoku_no = 0;
+     for($i=0;$i<$nenko_data_unserialize->getKanyusyaNum();$i++){
+      $kdata = $nenko_data_unserialize->getKanyusyaData($i);
+      if($kdata->isKeizoku()){
+       $keizoku_no++;
+     ?>
+     <tr>
+      <td><?php echo $keizoku_no;?></td>
+      <td><?php echo $kdata->No();?><br><?php echo $kdata->Name();?></td>
+      <td><?php echo number_format($kdata->NichigakuSel());?> 円</td>
+      <td class="jimu_hide"><?php echo number_format($kdata->getKingakuSel());?> 円</td>
      </tr>
      <?php } ?>
      <?php } ?>
