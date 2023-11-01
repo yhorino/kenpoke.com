@@ -33,6 +33,52 @@
  <form name="form" method="post" action="trans.php">
  <input type="hidden" name="pagename" value="selkeizokusya">
   
+  <?php /* 見本 */ ?>
+  <div class="inner">
+    <div class="keizokusya_itembox keizokusya_itembox_mihon">
+     <div class="mihon_title">見本</div>
+     <div class="mihon_comment mihon_comment1">①「継続」「脱退」のどちらかを選択してください</div>
+     <div class="mihon_comment mihon_comment2">②給付基礎日額の変更はこちらから</div>
+     <div class="keizokusya_itembox_left">
+      <span class="keizokusya_no">00000000</span>
+      <span class="keizokusya_name">労災　太郎</span>
+     </div>
+     <div class="keizokusya_itembox_center">
+      <label class="keizokusel_button"><input type="radio" name="keizokusel_9999" id="keizokusel_9999_keizoku" value="keizoku" checked>継続</label>
+      <label class="keizokusel_button"><input type="radio" name="keizokusel_9999" id="keizokusel_9999_dattai" value="dattai">脱退</label>
+     </div>
+     <div class="keizokusya_itembox_right">
+      <table class="keizokusya_kingaku_table">
+       <tr>
+        <th>給付基礎日額</th>
+        <th class="jimu_hide">保険料等</th>
+       </tr>
+       <tr id="row9999_now" class="row9999">
+        <td><span class="nichigaku">3,500</span> 円</td>
+        <td class="jimu_hide">30,095 円</td>
+       </tr>
+      </table>
+      <div class="change_nichigaku_box">
+       
+       <div id="nichigaku_title9999" class="change_nichigaku_title">給付基礎日額を変更する ▼</div>
+       
+       <!--<div class="change_nichigaku_body_mihon">
+        
+        <label id="cnb9999_3500" class="change_nichigaku_button buttonA"><input type="radio" name="change_nichigaku9999" value="3500">3,500円</label>
+        
+        <label id="cnb9999_10000" class="change_nichigaku_button buttonB"><input type="radio" name="change_nichigaku9999" value="10000" >10,000円</label>
+        
+        <label id="cnb9999_now" class="change_nichigaku_button buttonC"><input type="radio" name="change_nichigaku9999" value="3500" checked>現在の日額　3,500円</label>
+        
+       </div>-->
+      
+      </div>
+     </div>
+    </div>
+  </div>
+  <?php /* 見本 */ ?>
+  
+  
  <div class="outer_box inner">
   <h2 class="outer_box_title">継続する方をお選びください</h2>
   <div class="outer_box_body">
@@ -61,7 +107,7 @@
       <label class="keizokusel_button"><input type="radio" name="keizokusel_<?php echo $i;?>" id="keizokusel_<?php echo $i;?>_dattai" value="dattai" <?php echo $sel2;?>>脱退</label>
      </div>
      <div class="keizokusya_itembox_right">
-      <table class="keizokusya_kingaku_table">
+      <table class="keizokusya_kingaku_table keizokuitem">
        <tr>
         <th>給付基礎日額</th>
         <th class="jimu_hide">保険料等</th>
@@ -82,7 +128,7 @@
       
       <input type="hidden" name="sel_nichigaku<?php echo $i;?>" value="<?php echo $kdata->Nichigaku();?>">
       
-      <div class="change_nichigaku_box">
+      <div class="change_nichigaku_box keizokuitem">
        
        <div id="nichigaku_title<?php echo $i;?>" class="change_nichigaku_title" onclick="change_nichigaku_title_click('<?php echo $i;?>');">給付基礎日額を変更する ▼</div>
        
@@ -97,6 +143,14 @@
        </div>
       
       </div>
+      
+      <div class="dattairiyu dattaiitem">
+       <span class="dattairiyu_title">脱退理由</span>
+       <div class="dattairiyu_select">
+        <label><input type="checkbox" name="dattairiyu_1" value="<?php echo DATTAIRIYU_1;?>"> <?php echo DATTAIRIYU_1;?></label>　        <label><input type="checkbox" name="dattairiyu_2" value="<?php echo DATTAIRIYU_2;?>"> <?php echo DATTAIRIYU_2;?></label>　        <label><input type="checkbox" name="dattairiyu_3" value="<?php echo DATTAIRIYU_3;?>"> <?php echo DATTAIRIYU_3;?></label>　        <label><input type="checkbox" name="dattairiyu_4" value="<?php echo DATTAIRIYU_4;?>"> <?php echo DATTAIRIYU_4;?></label>　        <label><input type="checkbox" name="dattairiyu_5" value="<?php echo DATTAIRIYU_5;?>"> <?php echo DATTAIRIYU_5;?></label>　        <label><input type="checkbox" name="dattairiyu_6" value="<?php echo DATTAIRIYU_6;?>"> <?php echo DATTAIRIYU_6;?></label>
+       </div>
+      </div>
+      
      </div>
     </div>
     <?php } ?>

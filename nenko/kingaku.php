@@ -21,6 +21,7 @@
 </head>
 
 <body>
+ <div class="hide_on_print">
 <?php include_once('./gtm_body.php'); ?>
 <?php include_once('./body_settings.php'); ?>
 <?php
@@ -38,8 +39,8 @@
    <div class="kingaku_box" id="kingaku_box_mitsumori">
     <h3 class="keizokusyalist_header">
      <span class="keizokusyalist_header_title">継続される方：<?php echo $nenko_data_unserialize->getKeizokusyaNum();?>名</span>
-     <!--<span class="keizokusyalist_header_info">※ 明細が必要な方は、この画面を印刷ください。</span>
-     <span class="keizokusyalist_header_button" onclick="window.print()">印刷する</span>-->
+     <span class="keizokusyalist_header_info">※ 明細が必要な方は、この画面を印刷ください。</span>
+     <span class="keizokusyalist_header_button" onclick="window.print()">印刷する</span>
     </h3>
     
     <table class="keizokusyalist_table show_pc">
@@ -147,6 +148,7 @@
   
  
 <?php include_once('./footer.php'); ?>
+ </div>
  
  <script>
   $furikae = <?php if($nenko_data_unserialize->isFurikae() == true){echo 'true';} else {echo 'false';}?>;
@@ -199,5 +201,67 @@
    $('#cal_div').hide();
   }
  </script>
+ 
+ <?php
+  $print_title = $nenko_data_unserialize->No().' '.$nenko_data_unserialize->Name();
+  if($nenko_data_unserialize->Type() == DATATYPE_OYAKATAKANYUSYA){
+   $print_title = $print_title.' 様';
+  } else {
+   $print_title = $print_title.' 御中';   
+  }
+ $sougaku = number_format($nenko_data_unserialize->Sougaku());
+ ?>
+ <div class="show_on_print">
+  <div class="print_title"><?php echo $print_title;?></div>
+  <table class="print_table_sougaku">
+   <tr>
+    <th>保険料等のお支払総額</th>
+    <td><?php echo $sougaku;?> 円</td>
+   </tr>
+  </table>
+  <table class="print_table_kikan_ninzu">
+   <tr>
+    <th>継続期間</th>
+    <th>継続対象者</th>
+   </tr>
+   <tr>
+    <td>2024/4/1～2025/3/31</td>
+    <td><?php echo $nenko_data_unserialize->getKeizokusyaNum();?> 名</td>
+   </tr>
+  </table>
+  <table class="print_table_kanyusya">
+   <tr>
+    <th>No.</th>
+    <th>会員番号</th>
+    <th>氏名</th>
+    <th class="small">給付基礎日額</th>
+    <th class="jimu_hide left_border_tick">保険料</th>
+    <th class="jimu_hide">会費</th>
+    <th class="small jimu_hide">カード発行費用</th>
+    <th class="jimu_hide">小計</th>
+   </tr>
+   <?php 
+   $keizoku_no = 0;
+   for($i=0;$i<$nenko_data_unserialize->getKanyusyaNum();$i++){
+    $kdata = $nenko_data_unserialize->getKanyusyaData($i);
+    if($kdata->isKeizoku()){
+     $keizoku_no++;
+   ?>
+   <tr>
+    <td><?php echo $keizoku_no;?></td>
+    <td><?php echo $kdata->No();?></td>
+    <td class="name"><?php echo $kdata->Name();?></td>
+    <td class="kingaku"><?php echo number_format($kdata->NichigakuSel());?> 円</td>
+    <td class="kingaku jimu_hide left_border_tick"><?php echo number_format($kdata->getHokenryo());?> 円</td>
+    <td class="kingaku jimu_hide"><?php echo number_format($kdata->Kaihi());?> 円</td>
+    <td class="kingaku jimu_hide"><?php echo number_format($kdata->CardHakkohiyo());?> 円</td>
+    <td class="kingaku jimu_hide"><?php echo number_format($kdata->getKingakuSel());?> 円</td>
+   </tr>
+   <?php } ?>
+   <?php } ?>
+  </table>
+ </div>
+
+ 
 </body>
 </html>

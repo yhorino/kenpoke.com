@@ -38,6 +38,7 @@
   case 'selkeizokusya':
   {
    $nenko_data_unserialize = updateKeizokuState($nenko_data_unserialize, $_POST);
+   $nenko_data_unserialize = updateDattaiRiyu($nenko_data_unserialize, $_POST);
    $nenko_data_unserialize = updateNichigakuSel($nenko_data_unserialize, $_POST);
    $nenko_data_unserialize = calcSougaku($nenko_data_unserialize, $_POST);
    
@@ -95,6 +96,23 @@ function updateKeizokuState($nenkodata, $postdata){
  return $nenkodata;
 }
 
+function updateDattaiRiyu($nenkodata, $postdata){
+ for($i=0;$i<$nenkodata->getKanyusyaNum();$i++){
+  if($nenkodata->getKanyusyaData($i)->isKeizoku() == true){ continue;}
+
+  $_riyu_selected = array();
+  if($_POST['dattairiyu_1'] == DATTAIRIYU_1) $_riyu_selected[] = DATTAIRIYU_1;
+  if($_POST['dattairiyu_2'] == DATTAIRIYU_2) $_riyu_selected[] = DATTAIRIYU_2;
+  if($_POST['dattairiyu_3'] == DATTAIRIYU_3) $_riyu_selected[] = DATTAIRIYU_3;
+  if($_POST['dattairiyu_4'] == DATTAIRIYU_4) $_riyu_selected[] = DATTAIRIYU_4;
+  if($_POST['dattairiyu_5'] == DATTAIRIYU_5) $_riyu_selected[] = DATTAIRIYU_5;
+  if($_POST['dattairiyu_6'] == DATTAIRIYU_6) $_riyu_selected[] = DATTAIRIYU_6;
+  $_riyu = implode(';', $_riyu_selected);
+  $nenkodata->getKanyusyaData($i)->setDattaiRiyu($_riyu);
+ }
+ return $nenkodata;
+}
+
 function updateNichigakuSel($nenkodata, $postdata){
  for($i=0;$i<$nenkodata->getKanyusyaNum();$i++){
   if($nenkodata->getKanyusyaData($i)->isKeizoku() != true){ continue;}
@@ -147,6 +165,7 @@ function calcSougaku_Jimukumiai($nenkodata, $postdata){
  
  $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei;
 
+ $nenkodata->setHokenryo($_jimu_hokenryo);
  $nenkodata->setSougaku($_sougaku);
  
  return $nenkodata;

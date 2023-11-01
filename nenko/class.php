@@ -1,13 +1,14 @@
 <?php
  include_once('../bin/sf_Api.php');
  define('SELECT_DAIRI','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,dairinenkotaishoninzu__c,waribikigokaihi__c');
- define('SELECT_KOJIN','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,ordernumber__c,waribikigokaihi__c');
+ define('SELECT_KOJIN','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,ordernumber__c,waribikigokaihi__c,CardHakkohiyo__c');
 
  define('SELECT_JIMUKAISYA','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,Ryoritsu__c,waribikigokaihi__c,CardHakkohiyo__c,dairinenkotaishoninzu__c');
  define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c');
  define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c');
+ //define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dattairiyu__c');
  define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c');
- define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c');
+ define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c');
 
  define('NENDO', '2024');
 
@@ -26,6 +27,13 @@
  define('STATE_DATTAI', '脱退受付');
 
  define('MOUSHIKOMI_FROM', 'マイページ');
+
+ define('DATTAIRIYU_1','就職した');
+ define('DATTAIRIYU_2','建設業をやめた');
+ define('DATTAIRIYU_3','次の現場が決まってない');
+ define('DATTAIRIYU_4','今は必要ない');
+ define('DATTAIRIYU_5','従業員を雇った');
+ define('DATTAIRIYU_6','その他');
 
 /**********************************************************************/
 /* 代理・会社データ */
@@ -46,6 +54,7 @@
   private $_CustomerId;
   private $_Ryoritsu;
   private $_Kaihi;
+  private $_Hokenryo;
   
   private $_KanyusyaData = [];
   
@@ -68,10 +77,14 @@
   public function Kaihi(){return $this->_Kaihi;}
   public function CustomerId(){return $this->_CustomerId;}
   public function TradingId(){return $this->_TradingId;}
+  public function Hokenryo(){return $this->_Hokenryo;}
   
   /* 更新関数 */
   public function setSougaku($val){
    $this->_Sougaku = intval($val);
+  }
+  public function setHokenryo($val){
+   $this->_Hokenryo = intval($val);
   }
   public function setShiharaiType($val){
    if($val != SHIHARAI_TYPE_CARD && $val != SHIHARAI_TYPE_BANK && $val != SHIHARAI_TYPE_FURIKAE) return;
@@ -353,6 +366,7 @@
     'dairishinchokujokyo__c'=>$_keizoku,
     'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
     'dairihokenryooshiharaisogaku__c'=>$this->_Sougaku,
+    'hokenryo__c'=>$this->_Hokenryo,
     'dairinyukinshubetsu__c'=>$this->ShiharaiType()
    );
    sf_soql_update($_select, $_from, $_where, $_orderby, $updateitems);
@@ -391,6 +405,7 @@
   private $_ShiharaiKigen;
   private $_TradingId;
   private $_CardHakkohiyo;
+  private $_DattaiRiyu;
 
   private $_Keizoku;
   
@@ -400,6 +415,7 @@
    $this->_Name = '';
    $this->_Keizoku = 'keizoku';
    $this->_TradingId = rand(0,99999999).$No;
+   $this->_DattaiRiyu = '';
   }
   
   /* 参照関数 */
@@ -439,6 +455,9 @@
    $_date = date('Y-m-d', strtotime($val));
    $this->_ShiharaiKigen = $_date;
   }
+  public function setDattaiRiyu($val){
+   $this->_DattaiRiyu = $val;
+  }
   
   /* 判定関数 */
   public function isKeizoku(){
@@ -468,6 +487,10 @@
    }
    return $_santeikisogakusel;
   }
+  public function getHokenryo(){
+   return intval($this->getKingakuSel()) - intval($this->_Kaihi) - intval($this->_CardHakkohiyo);
+  }
+  
   
   /* SFから加入者年更レコード取得 */  
   public function getNenkoRecordData(){
@@ -507,21 +530,17 @@
    $_nendo = NENDO;
    $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
    $_orderby = "";
+   
    if($this->isKeizoku()){
-    $_keizoku = STATE_MOUSHIKOMI;
     if($this->ShiharaiType()==''){
      $this->setShiharaiType(SHIHARAI_TYPE_CARD);
     }
-   } else {
-    $_keizoku = STATE_DATTAI;
-   }
-   $updateitems=array(
-    'shinchokujokyo__c'=>$_keizoku,
-    'moshikomiuketsuke__c'=>MOUSHIKOMI_FROM,
-    'nenkojinichigaku__c'=>$this->NichigakuSel(),
-    'nyukinshubetsu__c'=>$this->ShiharaiType()
-   );
-   if($this->isKeizoku()){
+    $updateitems=array(
+     'shinchokujokyo__c'=>STATE_MOUSHIKOMI,
+     'moshikomiuketsuke__c'=>MOUSHIKOMI_FROM,
+     'nenkojinichigaku__c'=>$this->NichigakuSel(),
+     'nyukinshubetsu__c'=>$this->ShiharaiType()
+    );
     if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
      $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
      $updateitems=array_merge($updateitems, array('nyukinkigen__c'=>$_kigen_datetime));
@@ -531,6 +550,12 @@
      $updateitems=array_merge($updateitems, array('nyukinkakuninzumi__c'=>true));
      $updateitems=array_merge($updateitems, array('trading_id__c'=>$this->_TradingId));
     }
+   } else {
+    $updateitems=array(
+     'shinchokujokyo__c'=>STATE_DATTAI,
+     'moshikomiuketsuke__c'=>MOUSHIKOMI_FROM,
+     'dattairiyu__c'=>$this->_DattaiRiyu
+    );
    }
    
    sf_soql_update($_select, $_from, $_where, $_orderby, $updateitems);
