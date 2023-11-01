@@ -1,10 +1,18 @@
+<?php if($nenko_data_unserialize->isTypeOyakata() == true){
+ $furikae_date = '2月8日（木）';
+ $telno = '0120-931-519';
+} else {
+ $furikae_date = '3月8日（金）';
+ $telno = '0120-855-865';
+}
+?>
  <div id="kakunin_furikae_kouza" class="shiharai_box_text">
-  <p><span style="color: red;">振替日は、3月8日（金）です。</span></p>
+  <p><span style="color: red;">振替日は、<?php echo $furikae_date;?>です。</span></p>
   <p>下記ご登録口座より振替となります。事前にご確認をお願いいたします。</p>
   <br>
-  <p><?php echo nl2br($nenko_data_unserialize->KozaJoho());?></p>
+  <p><?php echo nl2br($nenko_data_unserialize->getKozaJohoMasked());?></p>
   <br>
-  <p>※ ご登録の口座情報を変更される場合は、必ず<?php if($nenko_data_unserialize->isTypeOyakata() == true){echo '0120-931-519';} else {echo '0120-855-865';}?>までお電話ください。</p>
+  <p>※ ご登録の口座情報を変更される場合は、必ず<?php echo $telno;?>までお電話ください。</p>
  </div>
 
  <form name="form" method="post" action="trans.php">
