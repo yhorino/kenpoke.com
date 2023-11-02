@@ -6,25 +6,75 @@
  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
  $nenko_data_unserialize->updateNenkoRecordData();
 
- $box_title = '継続申込　受付完了';
- $header_title = '継続申込を受付しました';
- $body = '
-     ご継続申込いただき、ありがとうございました。<br>
-     お振込先のメールを送信しています。<br>
-     期限内に必ず振込ください。<br>
-     なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。
- ';
-
- if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
-  $box_title = '脱退連絡受付しました';
-  $header_title = '脱退のご連絡確認しました';
+ if($nenko_data_unserialize->isTypeJimukumiai()){
+  $box_title = '継続申込　受付完了';
+  $header_title = '継続申込を受付しました';
   $body = '
-      いつもご利用いただき、ありがとうございました。<br>
-      <br>
-      脱退連絡を承りました。<br>
-      労災保険の特別加入が必要な時は、いつでもRJCにお声がけください。
+      ご継続申込いただき、ありがとうございました。<br>
+      お振込先のメールを送信しています。<br>
+      期限内に必ず振込ください。<br>
+      なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
   ';
+  
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       いつもご利用いただき、ありがとうございました。<br>
+       <br>
+       脱退連絡を承りました。<br>
+       中小事業主の特別加入が必要な時は、いつでも労働保険事務組合RJCにお声がけください。
+   ';
+  }
  }
+
+ if($nenko_data_unserialize->isTypeOyakataDairi()){
+  $box_title = '継続申込　受付完了';
+  $header_title = '継続申込を受付しました';
+  $body = '
+      ご継続申込いただき、ありがとうございました。<br>
+      お振込先のメールを送信しています。<br>
+      期限内に必ず振込ください。<br>
+      なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
+      <br>
+      登録情報に変更がある場合は、<a href="#" onclick="outputPDF();">こちら</a>から
+  ';
+  
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       いつもご利用いただき、ありがとうございました。<br>
+       <br>
+       脱退連絡を承りました。<br>
+       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
+   ';
+  }
+ }
+ if($nenko_data_unserialize->isTypeOyakataKanyusya()){
+  $box_title = '継続申込　受付完了';
+  $header_title = '継続申込を受付しました';
+  $body = '
+      ご継続申込いただき、ありがとうございました。<br>
+      お振込先のメールを送信しています。<br>
+      期限内に必ず振込ください。<br>
+      なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
+      <br>
+      登録情報に変更がある場合は、<a href="https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/editinfo.php">こちら</a>から
+  ';
+  
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       いつもご利用いただき、ありがとうございました。<br>
+       <br>
+       脱退連絡を承りました。<br>
+       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
+   ';
+  }
+ }
+
 ?>
 
 <!doctype html>
@@ -81,5 +131,8 @@
  
  <script>
  </script>
+ 
+<?php include_once('./kaisyahenko_pdfmake.php'); ?>
+ 
 </body>
 </html>

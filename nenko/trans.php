@@ -99,14 +99,12 @@ function updateKeizokuState($nenkodata, $postdata){
 function updateDattaiRiyu($nenkodata, $postdata){
  for($i=0;$i<$nenkodata->getKanyusyaNum();$i++){
   if($nenkodata->getKanyusyaData($i)->isKeizoku() == true){ continue;}
+  $items = $nenkodata->getKanyusyaData($i)->ItemDattaiRiyu();
 
   $_riyu_selected = array();
-  if($_POST['dattairiyu_1'] == DATTAIRIYU_1) $_riyu_selected[] = DATTAIRIYU_1;
-  if($_POST['dattairiyu_2'] == DATTAIRIYU_2) $_riyu_selected[] = DATTAIRIYU_2;
-  if($_POST['dattairiyu_3'] == DATTAIRIYU_3) $_riyu_selected[] = DATTAIRIYU_3;
-  if($_POST['dattairiyu_4'] == DATTAIRIYU_4) $_riyu_selected[] = DATTAIRIYU_4;
-  if($_POST['dattairiyu_5'] == DATTAIRIYU_5) $_riyu_selected[] = DATTAIRIYU_5;
-  if($_POST['dattairiyu_6'] == DATTAIRIYU_6) $_riyu_selected[] = DATTAIRIYU_6;
+  for($j=0;$j<count($items);$j++){
+   if($_POST['dattairiyu_'.$j] == $items[$j]) $_riyu_selected[] = $items[$j];
+  }
   $_riyu = implode(';', $_riyu_selected);
   $nenkodata->getKanyusyaData($i)->setDattaiRiyu($_riyu);
  }
