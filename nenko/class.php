@@ -9,7 +9,7 @@
  define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c');
  define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c');
 
- define('NENDO', '2024');
+ define('NENDO', '2023年度確定2024年度概算');
 
  define('SHIHARAI_TYPE_CARD', 'クレジットカード');
  define('SHIHARAI_TYPE_BANK', '銀行振込');
