@@ -1,16 +1,15 @@
 <?php
  include_once('../bin/sf_Api.php');
- define('SELECT_DAIRI','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,dairinenkotaishoninzu__c,waribikigokaihi__c');
+ define('SELECT_DAIRI','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,dairinenkotaishoninzu__c,waribikigokaihi__c,dairikaishameifurigana__c,dairiyubimbango__c,dairitodofuken__c,dairishikugun__c,dairichomeibanchi__c,dairidaihyosha__c,dairidaihyoshafurigana__c,dairitantosha__c,dairitantoshafurigana__c,dairidenwabango__c,dairifuakkusubango__c,dairitantosharenrakusaki__c,dairimail__c');
  define('SELECT_KOJIN','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,ordernumber__c,waribikigokaihi__c,CardHakkohiyo__c');
 
  define('SELECT_JIMUKAISYA','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,Ryoritsu__c,waribikigokaihi__c,CardHakkohiyo__c,dairinenkotaishoninzu__c');
  define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c');
  define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c');
- //define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dattairiyu__c');
  define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c');
  define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c');
 
- define('NENDO', '2024');
+ define('NENDO', '2023年度確定2024年度概算');
 
  define('SHIHARAI_TYPE_CARD', 'クレジットカード');
  define('SHIHARAI_TYPE_BANK', '銀行振込');
@@ -27,13 +26,6 @@
  define('STATE_DATTAI', '脱退受付');
 
  define('MOUSHIKOMI_FROM', 'マイページ');
-
- define('DATTAIRIYU_1','就職した');
- define('DATTAIRIYU_2','建設業をやめた');
- define('DATTAIRIYU_3','次の現場が決まってない');
- define('DATTAIRIYU_4','今は必要ない');
- define('DATTAIRIYU_5','従業員を雇った');
- define('DATTAIRIYU_6','その他');
 
 /**********************************************************************/
 /* 代理・会社データ */
@@ -55,6 +47,16 @@
   private $_Ryoritsu;
   private $_Kaihi;
   private $_Hokenryo;
+  private $_Kana;
+  private $_Address;
+  private $_DaihyosyaName;
+  private $_DaihyosyaKana;
+  private $_TantosyaName;
+  private $_TantosyaKana;
+  private $_Phone;
+  private $_Fax;
+  private $_TantosyaPhone;
+  private $_Email;
   
   private $_KanyusyaData = [];
   
@@ -78,6 +80,16 @@
   public function CustomerId(){return $this->_CustomerId;}
   public function TradingId(){return $this->_TradingId;}
   public function Hokenryo(){return $this->_Hokenryo;}
+  public function Kana(){return $this->_Kana;}
+  public function Address(){return $this->_Address;}
+  public function DaihyosyaName(){return $this->_DaihyosyaName;}
+  public function DaihyosyaKana(){return $this->_DaihyosyaKana;}
+  public function TantosyaName(){return $this->_TantosyaName;}
+  public function TantosyaKana(){return $this->_TantosyaKana;}
+  public function Phone(){return $this->_Phone;}
+  public function Fax(){return $this->_Fax;}
+  public function TantosyaPhone(){return $this->_TantosyaPhone;}
+  public function Email(){return $this->_Email;}
   
   /* 更新関数 */
   public function setSougaku($val){
@@ -110,6 +122,20 @@
   /* 判定関数 */
   public function isTypeOyakata(){
    if($this->_Type == DATATYPE_OYAKATADAIRI || $this->_Type == DATATYPE_OYAKATAKANYUSYA){
+    return true;
+   } else {
+    return false;
+   }
+  }
+  public function isTypeOyakataDairi(){
+   if($this->_Type == DATATYPE_OYAKATADAIRI){
+    return true;
+   } else {
+    return false;
+   }
+  }
+  public function isTypeOyakataKanyusya(){
+   if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
     return true;
    } else {
     return false;
@@ -183,6 +209,17 @@
    $this->_CustomerId = $_row['dairinenkotaishoninzu__c'];// 間違いではない
    if($this->_CustomerId == ''){$this->_CustomerId = $this->_TradingId;}
    
+   $this->_Kana = $_row['dairikaishameifurigana__c'];
+   $this->_Address = $_row['dairiyubimbango__c'].' '.$_row['dairitodofuken__c'].$_row['dairishikugun__c'].$_row['dairichomeibanchi__c'];
+   $this->_DaihyosyaName = $_row['dairidaihyosha__c'];
+   $this->_DaihyosyaKana = $_row['dairidaihyoshafurigana__c'];
+   $this->_TantosyaName = $_row['dairitantosha__c'];
+   $this->_TantosyaKana = $_row['dairitantoshafurigana__c'];
+   $this->_Phone = $_row['dairidenwabango__c'];
+   $this->_Fax = $_row['dairifuakkusubango__c'];
+   $this->_TantosyaPhone = $_row['dairitantosharenrakusaki__c'];
+   $this->_Email = $_row['dairimail__c'];
+    
    return true;
   }
   private function _getNenkoRecordData_oyakatakanyusya(){
@@ -409,6 +446,8 @@
 
   private $_Keizoku;
   
+  private $_ItemDattaiRiyu;
+  
   public function __construct($type, $No){
    $this->_Type = $type;
    $this->_No = $No;
@@ -416,6 +455,13 @@
    $this->_Keizoku = 'keizoku';
    $this->_TradingId = rand(0,99999999).$No;
    $this->_DattaiRiyu = '';
+   // SFの「【年更】脱退理由」項目の選択肢に含まれているか確認すること
+   if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
+    $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','今は必要ない','従業員を雇った','その他');
+   }
+   if($this->_Type == DATATYPE_JIMUKANYUSYA){
+    $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','今は必要ない','従業員を雇った','その他');
+   }
   }
   
   /* 参照関数 */
@@ -432,6 +478,7 @@
   public function CardHakkohiyo(){return $this->_CardHakkohiyo;}
   public function ShiharaiType(){return $this->_ShiharaiType;}
   public function TradingId(){return $this->_TradingId;}
+  public function ItemDattaiRiyu(){return $this->_ItemDattaiRiyu;}
 
   /* 更新関数 */
   public function setKeizoku($val){

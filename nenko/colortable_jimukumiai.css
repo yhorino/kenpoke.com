@@ -5,5 +5,5 @@
  --sub_color: #299700;
 }
 .jimu_hide{
- display: none;
+ display: none!important;
 }

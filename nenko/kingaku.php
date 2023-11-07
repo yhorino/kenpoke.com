@@ -6,6 +6,14 @@
  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
  include('./session_check.php');
 
+ $addinfo_jimu = '';
+ if($nenko_data_unserialize->isTypeJimukumiai()){
+  $addinfo_jimu = nl2br('
+  
+※ 労働保険料は昨年の金額で計算しています。
+国による来年度の労災保険料率の確定は、1月以降です。
+料率確定後の最終金額は、2月9日（金）に発送される納入通知書をご確認ください。');
+ }
 ?>
 
 <!doctype html>
@@ -108,7 +116,7 @@
        <span class="keizokusya_mitsumori_info_line_text"><?php echo $nenko_data_unserialize->getKeizokusyaNum();?> 名</span>
       </div>
      </div>
-     <p class="keizokusya_mitsumori_addinfo">※ お支払総額には会費、保険料が含まれています。</p>
+     <p class="keizokusya_mitsumori_addinfo">※ お支払総額には会費、保険料、プレミアムカード発行費用が含まれています。<?php echo $addinfo_jimu;?></p>
     </div>
 
     <div class="submit_box submit_box_show_shiharai">

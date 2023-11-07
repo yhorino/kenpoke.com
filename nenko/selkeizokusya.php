@@ -6,6 +6,10 @@
  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
  include('./session_check.php');
 
+ $keizokusya_itembox_style = '';
+ if($nenko_data_unserialize->isTypeJimukumiai()){
+  $keizokusya_itembox_style = ' style="grid-template-columns: 1fr 200px 220px;" ';
+ }
 ?>
 
 <!doctype html>
@@ -35,7 +39,7 @@
   
   <?php /* 見本 */ ?>
   <div class="inner">
-    <div class="keizokusya_itembox keizokusya_itembox_mihon">
+    <div class="keizokusya_itembox keizokusya_itembox_mihon" <?php echo $keizokusya_itembox_style;?>>
      <div class="mihon_title">見本</div>
      <div class="mihon_comment mihon_comment1">①「継続」「脱退」のどちらかを選択してください</div>
      <div class="mihon_comment mihon_comment2">②給付基礎日額の変更はこちらから</div>
@@ -97,7 +101,7 @@
      if($kdata->isKeizoku()){ $sel1 = 'checked';}
      else { $sel2 = 'checked'; $dattai_class='dattai';}
     ?>
-    <div class="keizokusya_itembox <?php echo $dattai_class;?>">
+    <div class="keizokusya_itembox <?php echo $dattai_class;?>" <?php echo $keizokusya_itembox_style;?>>
      <div class="keizokusya_itembox_left">
       <span class="keizokusya_no"><?php echo $kdata->No();?></span>
       <span class="keizokusya_name"><?php echo $kdata->Name();?></span>
@@ -144,10 +148,15 @@
       
       </div>
       
-      <div class="dattairiyu dattaiitem">
+      <div class="dattairiyu dattaiitem jimu_hide">
        <span class="dattairiyu_title">脱退理由</span>
        <div class="dattairiyu_select">
-        <label><input type="checkbox" name="dattairiyu_1" value="<?php echo DATTAIRIYU_1;?>"> <?php echo DATTAIRIYU_1;?></label>　        <label><input type="checkbox" name="dattairiyu_2" value="<?php echo DATTAIRIYU_2;?>"> <?php echo DATTAIRIYU_2;?></label>　        <label><input type="checkbox" name="dattairiyu_3" value="<?php echo DATTAIRIYU_3;?>"> <?php echo DATTAIRIYU_3;?></label>　        <label><input type="checkbox" name="dattairiyu_4" value="<?php echo DATTAIRIYU_4;?>"> <?php echo DATTAIRIYU_4;?></label>　        <label><input type="checkbox" name="dattairiyu_5" value="<?php echo DATTAIRIYU_5;?>"> <?php echo DATTAIRIYU_5;?></label>　        <label><input type="checkbox" name="dattairiyu_6" value="<?php echo DATTAIRIYU_6;?>"> <?php echo DATTAIRIYU_6;?></label>
+        <?php 
+         $items = $kdata->ItemDattaiRiyu();
+         for($j=0;$j<count($items);$j++){
+          ?>
+        <label><input type="checkbox" name="dattairiyu_<?php echo $j;?>" value="<?php echo $items[$j];?>"> <?php echo $items[$j];?>　</label>
+        <?php } ?>
        </div>
       </div>
       

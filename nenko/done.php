@@ -6,25 +6,77 @@
  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
  $nenko_data_unserialize->updateNenkoRecordData();
 
- $box_title = '継続申込　受付完了';
- $header_title = '継続申込を受付しました';
- $body = '
-     ご継続申込いただき、ありがとうございました。<br>
-     お振込先のメールを送信しています。<br>
-     期限内に必ず振込ください。<br>
-     なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。
- ';
-
- if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
-  $box_title = '脱退連絡受付しました';
-  $header_title = '脱退のご連絡確認しました';
+ if($nenko_data_unserialize->isTypeJimukumiai()){
+  $box_title = '継続申込　受付完了';
+  $header_title = '継続申込を受付しました';
   $body = '
-      いつもご利用いただき、ありがとうございました。<br>
+      ご継続申込いただき、ありがとうございました。<br>
+      お振込先のメールを送信しています。<br>
+      期限内に必ず振込ください。<br>
+      なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
       <br>
-      脱退連絡を承りました。<br>
-      労災保険の特別加入が必要な時は、いつでもRJCにお声がけください。
+      登録情報に変更がある場合は、<a href="https://www.xn--y5q0r2lqcz91qdrc.com/mypage/kaisya.php">こちら</a>から
   ';
+  
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '営業時間内にお電話ください';
+   $body = '
+   脱退のご連絡を受け付けました。<br>
+   確認事項があります。<br>
+   営業時間内に、<a href="tel:0120855865">0120-855-865</a>までお電話ください。<br>
+   営業時間は、月曜日から金曜日（土日祝を除く）9:00～17:30までとなっております。
+   ';
+  }
  }
+
+ if($nenko_data_unserialize->isTypeOyakataDairi()){
+  $box_title = '継続申込　受付完了';
+  $header_title = '継続申込を受付しました';
+  $body = '
+      ご継続申込いただき、ありがとうございました。<br>
+      お振込先のメールを送信しています。<br>
+      期限内に必ず振込ください。<br>
+      なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
+      <br>
+      登録情報に変更がある場合は、<a href="#" onclick="outputPDF();">こちら</a>から
+  ';
+  
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       いつもご利用いただき、ありがとうございました。<br>
+       <br>
+       脱退連絡を承りました。<br>
+       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
+   ';
+  }
+ }
+ if($nenko_data_unserialize->isTypeOyakataKanyusya()){
+  $box_title = '継続申込　受付完了';
+  $header_title = '継続申込を受付しました';
+  $body = '
+      ご継続申込いただき、ありがとうございました。<br>
+      お振込先のメールを送信しています。<br>
+      期限内に必ず振込ください。<br>
+      なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
+      <br>
+      登録情報に変更がある場合は、<a href="https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/editinfo.php">こちら</a>から
+  ';
+  
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       いつもご利用いただき、ありがとうございました。<br>
+       <br>
+       脱退連絡を承りました。<br>
+       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
+   ';
+  }
+ }
+
 ?>
 
 <!doctype html>
@@ -55,10 +107,8 @@
   <div class="outer_box_body">
    
    <div class="kingaku_box">
-    <h3 class="keizokusyalist_header">
+    <h3 class="keizokusyalist_header oneline">
      <span class="keizokusyalist_header_title"><?php echo $header_title;?></span>
-     <span class=""></span>
-     <span class=""></span>
     </h3>
     
     <p>
@@ -81,5 +131,8 @@
  
  <script>
  </script>
+ 
+<?php include_once('./kaisyahenko_pdfmake.php'); ?>
+ 
 </body>
 </html>
