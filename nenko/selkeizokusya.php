@@ -148,7 +148,7 @@
       
       </div>
       
-      <div class="dattairiyu dattaiitem">
+      <div class="dattairiyu dattaiitem jimu_hide">
        <span class="dattairiyu_title">脱退理由</span>
        <div class="dattairiyu_select">
         <?php 

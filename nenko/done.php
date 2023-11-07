@@ -14,16 +14,18 @@
       お振込先のメールを送信しています。<br>
       期限内に必ず振込ください。<br>
       なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。<br>
+      <br>
+      登録情報に変更がある場合は、<a href="https://www.xn--y5q0r2lqcz91qdrc.com/mypage/kaisya.php">こちら</a>から
   ';
   
   if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
    $box_title = '脱退連絡受付しました';
-   $header_title = '脱退のご連絡確認しました';
+   $header_title = '営業時間内にお電話ください';
    $body = '
-       いつもご利用いただき、ありがとうございました。<br>
-       <br>
-       脱退連絡を承りました。<br>
-       中小事業主の特別加入が必要な時は、いつでも労働保険事務組合RJCにお声がけください。
+   脱退のご連絡を受け付けました。<br>
+   確認事項があります。<br>
+   営業時間内に、<a href="tel:0120855865">0120-855-865</a>までお電話ください。<br>
+   営業時間は、月曜日から金曜日（土日祝を除く）9:00～17:30までとなっております。
    ';
   }
  }
@@ -105,10 +107,8 @@
   <div class="outer_box_body">
    
    <div class="kingaku_box">
-    <h3 class="keizokusyalist_header">
+    <h3 class="keizokusyalist_header oneline">
      <span class="keizokusyalist_header_title"><?php echo $header_title;?></span>
-     <span class=""></span>
-     <span class=""></span>
     </h3>
     
     <p>
