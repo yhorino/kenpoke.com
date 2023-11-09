@@ -5,8 +5,8 @@
 
  define('SELECT_JIMUKAISYA','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,Ryoritsu__c,waribikigokaihi__c,CardHakkohiyo__c,dairinenkotaishoninzu__c');
  define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c');
- define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c');
- define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c');
+ define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,dairikingakuannaisofuzumi__c');
+ define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,kingakuannaisofu__c');
  define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c');
 
  define('NENDO', '2023年度確定2024年度概算');
@@ -23,6 +23,7 @@
  define('SF_OBJECT', 'nendokoshin__c');
 
  define('STATE_MOUSHIKOMI', '申込み受付済み');
+ define('STATE_NYUKINMACHI', '入金待ち');
  define('STATE_DATTAI', '脱退受付');
 
  define('MOUSHIKOMI_FROM', 'マイページ');
@@ -65,6 +66,7 @@
    $this->_No = $No;
    $this->_Name = '';
    $this->_TradingId = rand(0,99999999).$No;
+   $this->_ShiharaiType = SHIHARAI_TYPE_CARD;
   }
   
   /* 参照関数 */
@@ -357,6 +359,9 @@
    }
    if($this->getKeizokusyaNum()>0){
     $_keizoku = STATE_MOUSHIKOMI;
+    if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
+     $_keizoku = STATE_NYUKINMACHI;
+    }
    } else {
     $_keizoku = STATE_DATTAI;
    }
@@ -370,6 +375,7 @@
    if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
     $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
     $updateitems=array_merge($updateitems, array('dairinyukinkigen__c'=>$_kigen_datetime));
+    $updateitems=array_merge($updateitems, array('dairikingakuannaisofuzumi__c'=>true));
    }
    if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
     $updateitems=array_merge($updateitems, array('dairinyukikingaku__c'=>$this->_Sougaku));
@@ -455,6 +461,7 @@
    $this->_Keizoku = 'keizoku';
    $this->_TradingId = rand(0,99999999).$No;
    $this->_DattaiRiyu = '';
+   $this->_ShiharaiType = SHIHARAI_TYPE_CARD;
    // SFの「【年更】脱退理由」項目の選択肢に含まれているか確認すること
    if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
     $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','今は必要ない','従業員を雇った','その他');
@@ -582,8 +589,12 @@
     if($this->ShiharaiType()==''){
      $this->setShiharaiType(SHIHARAI_TYPE_CARD);
     }
+    $_keizoku = STATE_MOUSHIKOMI;
+    if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
+     $_keizoku = STATE_NYUKINMACHI;
+    }
     $updateitems=array(
-     'shinchokujokyo__c'=>STATE_MOUSHIKOMI,
+     'shinchokujokyo__c'=>$_keizoku,
      'moshikomiuketsuke__c'=>MOUSHIKOMI_FROM,
      'nenkojinichigaku__c'=>$this->NichigakuSel(),
      'nyukinshubetsu__c'=>$this->ShiharaiType()
@@ -591,6 +602,7 @@
     if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
      $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
      $updateitems=array_merge($updateitems, array('nyukinkigen__c'=>$_kigen_datetime));
+     $updateitems=array_merge($updateitems, array('kingakuannaisofu__c'=>true));
     }
     if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
      $updateitems=array_merge($updateitems, array('nyukinkingaku__c'=>$this->getKingakuSel()));

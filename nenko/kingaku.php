@@ -53,11 +53,11 @@
     
     <table class="keizokusyalist_table show_pc">
      <tr>
-      <th>No.</th>
-      <th>会員番号</th>
+      <th class="col_no">No.</th>
+      <th class="col_kaiinno">会員番号</th>
       <th>氏名</th>
-      <th>給付基礎日額</th>
-      <th class="jimu_hide">お支払総額</th>
+      <th class="col_nichigaku">給付基礎日額</th>
+      <th class="col_sougaku jimu_hide">お支払総額</th>
      </tr>
      <?php 
      $keizoku_no = 0;
@@ -79,10 +79,10 @@
     
     <table class="keizokusyalist_table show_sp">
      <tr>
-      <th>No.</th>
+      <th class="col_no">No.</th>
       <th>会員番号・氏名</th>
-      <th>給付基礎日額</th>
-      <th class="jimu_hide">お支払総額</th>
+      <th class="col_nichigaku">給付基礎日額</th>
+      <th class="col_sougaku jimu_hide">お支払総額</th>
      </tr>
      <?php 
      $keizoku_no = 0;
@@ -166,13 +166,16 @@
    $('#kingaku_box_shiharai').hide();
    
    if($furikae == true){
+    $('.shiharai_buttons_box').hide();
     $('#shiharai_furikae_box').show();    
-    $('#shiharai_card_label').hide();
-    $('#shiharai_bank_label').hide();
+    //$('#shiharai_card_label').hide();
+    //$('#shiharai_bank_label').hide();
+    //$('#shiharai_furikae_label').hide();
     $('#shiharai_furikae').prop('checked', true);
-    $('.shiharai_buttons_box').addClass('buttons_furikae');
+    //$('.shiharai_buttons_box').addClass('buttons_furikae');
    } else {
     $('#shiharai_card_box').show();
+    $('#shiharai_card').prop('checked', true);
     $('#shiharai_furikae_label').hide();
    }
    

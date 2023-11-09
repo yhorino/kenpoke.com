@@ -55,11 +55,11 @@
       <table class="keizokusya_kingaku_table">
        <tr>
         <th>給付基礎日額</th>
-        <th class="jimu_hide">保険料等</th>
+        <th class="jimu_hide">お支払い総額</th>
        </tr>
        <tr id="row9999_now" class="row9999">
         <td><span class="nichigaku">3,500</span> 円</td>
-        <td class="jimu_hide">30,095 円</td>
+        <td class="jimu_hide">32,295 円</td>
        </tr>
       </table>
       <div class="change_nichigaku_box">
@@ -107,14 +107,14 @@
       <span class="keizokusya_name"><?php echo $kdata->Name();?></span>
      </div>
      <div class="keizokusya_itembox_center">
-      <label class="keizokusel_button"><input type="radio" name="keizokusel_<?php echo $i;?>" id="keizokusel_<?php echo $i;?>_keizoku" value="keizoku" <?php echo $sel1;?>>継続</label>
-      <label class="keizokusel_button"><input type="radio" name="keizokusel_<?php echo $i;?>" id="keizokusel_<?php echo $i;?>_dattai" value="dattai" <?php echo $sel2;?>>脱退</label>
+      <label class="keizokusel_button"><input type="radio" name="keizokusel_<?php echo $i;?>" id="keizokusel_<?php echo $i;?>_keizoku" value="keizoku" <?php echo $sel1;?> class="required keizoku_button">継続</label>
+      <label class="keizokusel_button"><input type="radio" name="keizokusel_<?php echo $i;?>" id="keizokusel_<?php echo $i;?>_dattai" value="dattai" <?php echo $sel2;?> class="required dattai_button">脱退</label>
      </div>
      <div class="keizokusya_itembox_right">
       <table class="keizokusya_kingaku_table keizokuitem">
        <tr>
         <th>給付基礎日額</th>
-        <th class="jimu_hide">保険料等</th>
+        <th class="jimu_hide">お支払い総額</th>
        </tr>
        <tr id="row<?php echo $i;?>_now" class="row<?php echo $i;?>">
         <td><span class="nichigaku"><?php echo number_format($kdata->Nichigaku());?></span> 円</td>
@@ -155,7 +155,7 @@
          $items = $kdata->ItemDattaiRiyu();
          for($j=0;$j<count($items);$j++){
           ?>
-        <label><input type="checkbox" name="dattairiyu_<?php echo $j;?>" value="<?php echo $items[$j];?>"> <?php echo $items[$j];?>　</label>
+        <label><input type="radio" name="dattairiyu_<?php echo $i;?>" value="<?php echo $items[$j];?>" class="required"> <?php echo $items[$j];?>　</label>
         <?php } ?>
        </div>
       </div>
@@ -166,6 +166,7 @@
 
    </div>
    
+   <div class="keizokusya_info_dispbox" id="keizokusya_info_dispbox">
    <div class="keizokusya_infobox">
     <div class="keizokusya_infobox_title">
      <img src="/nenko/img/symbol018.png" alt="" class="keizokusya_infobox_title_icon"><span class="keizokusya_infobox_title_text">年度途中の日額変更はできません。<br>ご確認ください。</span>
@@ -179,11 +180,12 @@
     </div>
    </div>
    
-   <label class="info_check"><input type="checkbox" name="info_check" id="info_check"> 上記内容を確認しました</label>
-
+   <label class="info_check"><input type="checkbox" name="info_check" id="info_check" class="required"> 上記内容を確認しました</label>
+   </div>
+   
    <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
 
-   <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="継続手続きを進める" disabled>
+   <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="継続手続きを進める">
   </div>
   
  </div>
@@ -202,6 +204,7 @@
    $('.change_nichigaku_body').hide();
    //$('input[name="info_check"]').prop('checked', false);
    
+   /*
    $('input[name="info_check"]').click(function(){
     if($(this).prop('checked') == true){
      $('input[name="submit_button"]').prop('disabled', false);
@@ -209,13 +212,48 @@
      $('input[name="submit_button"]').prop('disabled', true);
     }
    });
+   */
    $('.keizokusel_button input').click(function(){
     $(this).parents('.keizokusya_itembox').removeClass('dattai');
     $val = $(this).val();
     if($val == 'dattai'){
      $(this).parents('.keizokusya_itembox').addClass('dattai');
     }
+    $keizoku_count = document.querySelectorAll('input.keizoku_button:checked').length;
+    if($keizoku_count <= 0){
+     $('#keizokusya_info_dispbox').hide();
+    } else {
+     $('#keizokusya_info_dispbox').show();
+    }
    });
+   
+   $('input').click(function(){
+    $('input.required').each(function(){
+     if($(this).is(':visible')){
+      $(this).prop('required', true);
+     } else {
+      $(this).removeAttr('required');
+     }
+    });
+   });
+
+   /*
+   $('.dattairiyu_select input').click(function(){
+    var name = $(this).prop('name');
+    var checkboxes = document.querySelectorAll('input[name="'+name+'"]');
+    var selectedvalues = [];
+    checkboxes.forEach(function(checkbox){
+     if(checkbox.checked){
+      selectedvalues.push(checkbox.value);
+     }
+    });
+    if(selectedvalues.length <= 0){
+     $(this).parents('.dattairiyu_select').find('.dattairiyu_sel').val('');
+    } else {
+     $(this).parents('.dattairiyu_select').find('.dattairiyu_sel').val(selectedvalues.join(';'));
+    }
+   });
+  */
   });
   function change_nichigaku_title_click($idx){
    $('#nichigaku_title'+$idx).next('.change_nichigaku_body').toggle();

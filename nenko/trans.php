@@ -12,11 +12,12 @@
   if($_GET['type'] == 11){$type = DATATYPE_JIMUKAISYA;}
   if($_GET['type'] == 12){$type = DATATYPE_JIMUKANYUSYA;}
   setcookie('type', $type);
+  setcookie('errorlog', '');
   $nenko_data = new NenkoData($type, $_GET['no']);
   $ret = $nenko_data->getNenkoRecordData();
-  if($ret == false){header('Location: error.php');exit;}
+  if($ret == false){ setcookie('errorcode', 1);header('Location: error.php');exit;}
   $ret = $nenko_data->getNenkoKanyusyaRecordData();
-  if($ret == false){header('Location: error.php');exit;}
+  if($ret == false){ setcookie('errorcode', 2);header('Location: error.php');exit;}
 
   $_SESSION['nenko_data'] = serialize($nenko_data);
 
@@ -98,14 +99,18 @@ function updateKeizokuState($nenkodata, $postdata){
 
 function updateDattaiRiyu($nenkodata, $postdata){
  for($i=0;$i<$nenkodata->getKanyusyaNum();$i++){
+  $nenkodata->getKanyusyaData($i)->setDattaiRiyu('');
   if($nenkodata->getKanyusyaData($i)->isKeizoku() == true){ continue;}
   $items = $nenkodata->getKanyusyaData($i)->ItemDattaiRiyu();
 
+  /*
   $_riyu_selected = array();
   for($j=0;$j<count($items);$j++){
    if($_POST['dattairiyu_'.$j] == $items[$j]) $_riyu_selected[] = $items[$j];
   }
   $_riyu = implode(';', $_riyu_selected);
+  */
+  $_riyu = $_POST['dattairiyu_'.$i];
   $nenkodata->getKanyusyaData($i)->setDattaiRiyu($_riyu);
  }
  return $nenkodata;

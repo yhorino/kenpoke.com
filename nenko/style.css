@@ -73,6 +73,7 @@
 .keizokusya_itembox_grid{
  display: grid;
  gap: 70px;
+ margin-bottom: 50px;
 }
 .keizokusya_itembox {
  padding: 30px;
@@ -137,7 +138,6 @@
 }
 
 .keizokusya_infobox {
- margin: 50px 0 0 0;
  background-color: #D6D6D6;
  padding: 10px;
 }
@@ -312,9 +312,10 @@
 }
 
 .keizokusyalist_table {
- width: 100%;
- max-width: 600px;
+ width: 800px;
+ max-width: 100%;
  margin: 20px auto;
+ table-layout: fixed;
 }
 .keizokusyalist_table th {
  font-weight: normal;
@@ -326,6 +327,24 @@
  border: 1px solid #707070;
  text-align: center;
  padding: 10px;
+ white-space: normal;
+ word-wrap: break-word;
+}
+.keizokusyalist_table th.col_no {
+ width: 3em;
+ min-width: 3em;
+}
+.keizokusyalist_table th.col_kaiinno {
+ width: 8em;
+ min-width: 8em;
+}
+.keizokusyalist_table th.col_nichigaku {
+ width: 8em;
+ min-width: 8em;
+}
+.keizokusyalist_table th.col_sougaku {
+ width: 7em;
+ min-width: 7em;
 }
 
 .keizokusya_mitsumori_box {
@@ -436,7 +455,7 @@
  margin: 0 auto;
 }
 .shiharai_furikae_box{
- padding: 60px 0px;
+ padding: 20px 0px;
  width: 860px;
  max-width: 100%;
  margin: 0 auto;
