@@ -47,8 +47,8 @@
    <div class="kingaku_box" id="kingaku_box_mitsumori">
     <h3 class="keizokusyalist_header">
      <span class="keizokusyalist_header_title">継続される方：<?php echo $nenko_data_unserialize->getKeizokusyaNum();?>名</span>
-     <span class="keizokusyalist_header_info">※ 明細が必要な方は、この画面を印刷ください。</span>
-     <span class="keizokusyalist_header_button" onclick="window.print()">印刷する</span>
+     <span class="keizokusyalist_header_info show_pc">※ 明細が必要な方は、この画面を印刷ください。</span>
+     <span class="keizokusyalist_header_button show_pc" onclick="window.print()">印刷する</span>
     </h3>
     
     <div class="table_container">
