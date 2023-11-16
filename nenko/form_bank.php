@@ -1,6 +1,13 @@
 <?php 
 $kigen = date('Y-m-d', strtotime('+3 days'));
 $kigen_max = date('Y-m-d', strtotime('+10 days'));
+$kigen_disp = date('Y年m月d日', strtotime('+3 days'));
+$kigen_max_disp = date('Y年m月d日', strtotime('+10 days'));
+setlocale(LC_TIME, 'ja_JP.UTF-8');
+$kigen_dow = strftime("%a", strtotime('+3 days'));
+$kigen_max_dow = strftime("%a", strtotime('+10 days'));
+$kigen_disp = $kigen_disp.'('.$kigen_dow.')';
+$kigen_max_disp = $kigen_max_disp.'('.$kigen_max_dow.')';
 ?>
 
  <form name="form" method="post" action="trans.php">
@@ -17,7 +24,7 @@ $kigen_max = date('Y-m-d', strtotime('+10 days'));
     お振込み期限は、本日から3日以内です。<br>
     <!--お振込み期限は、3月6日（月）です。<br>-->
     昨年度は99%の方が期限内にお振込みいただいております。</p>
-   <p class="p2"><span id="bank_kigen2"><?php echo $kigen;?></span>までに<br>
+   <p class="p2"><span id="bank_kigen2"><?php echo $kigen_disp;?></span>までに<br>
     お振込みできますか？</p>
    <div class="popup_button_div">
     <a id="popup_yes">できる</a>
@@ -25,10 +32,10 @@ $kigen_max = date('Y-m-d', strtotime('+10 days'));
     <a id="popup_close">×</a>
    </div>
    <div id="cal_div" class="cal_div">
-    <p>お支払い可能な期限を<br><?php echo $kigen;?>～<?php echo $kigen_max;?><br>の間で選択してください。</p>
+    <p>お支払い可能な期限を<br><?php echo $kigen_disp;?>～<?php echo $kigen_max_disp;?><br>の間で選択してください。</p>
     <input type="date" name="shiharai_day" id="shiharai_day" min="<?php echo $kigen;?>" max="<?php echo $kigen_max;?>" value="<?php echo $kigen;?>"><br>
     <a id="popup_kakutei">確定</a>
-    <p id="kigen_err"><?php echo $kigen;?>～<?php echo $kigen_max;?>の間で指定してください。</p>
+    <p id="kigen_err"><?php echo $kigen_disp;?>～<?php echo $kigen_max_disp;?>の間で指定してください。</p>
    </div>
    <p class="p3">※ 一度振込期限を過ぎますと新規申込みとなります。<br>
 　 <span style="color: red;">新規申込では、継続特別価格は適用されません。</span><br>
@@ -38,7 +45,7 @@ $kigen_max = date('Y-m-d', strtotime('+10 days'));
  </div>
    
  <div id="kakunin_bank_kouza" class="shiharai_box_text">
-  <p><span style="color: red;">お振込み期限は、<span id="bank_kigen"><?php echo $kigen;?></span>　までです。</span></p>
+  <p><span style="color: red;">お振込み期限は、<span id="bank_kigen"><?php echo $kigen_disp;?></span>　までです。</span></p>
   <p>お振込先は、継続申込み受付完了後ご登録のメールアドレスへメールいたします。</p><br>
 
   <p>振込期限までにお支払いがない場合は、お申込みはキャンセルとさせていただきます。<br>

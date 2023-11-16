@@ -51,11 +51,12 @@
      <span class="keizokusyalist_header_button" onclick="window.print()">印刷する</span>
     </h3>
     
+    <div class="table_container">
     <table class="keizokusyalist_table show_pc">
      <tr>
       <th class="col_no">No.</th>
       <th class="col_kaiinno">会員番号</th>
-      <th>氏名</th>
+      <th class="col_name">氏名</th>
       <th class="col_nichigaku">給付基礎日額</th>
       <th class="col_sougaku jimu_hide">お支払総額</th>
      </tr>
@@ -80,7 +81,7 @@
     <table class="keizokusyalist_table show_sp">
      <tr>
       <th class="col_no">No.</th>
-      <th>会員番号・氏名</th>
+      <th class="col_name">会員番号・氏名</th>
       <th class="col_nichigaku">給付基礎日額</th>
       <th class="col_sougaku jimu_hide">お支払総額</th>
      </tr>
@@ -100,6 +101,7 @@
      <?php } ?>
      <?php } ?>
     </table>
+    </div>
     
     <div class="keizokusya_mitsumori_box">
      <div class="keizokusya_mitsumori_sougaku">
@@ -215,7 +217,7 @@
  
  <?php
   $print_title = $nenko_data_unserialize->No().' '.$nenko_data_unserialize->Name();
-  if($nenko_data_unserialize->Type() == DATATYPE_OYAKATAKANYUSYA){
+  if($nenko_data_unserialize->isTypeOyakataKanyusya()){
    $print_title = $print_title.' 様';
   } else {
    $print_title = $print_title.' 御中';   
@@ -271,6 +273,7 @@
    <?php } ?>
    <?php } ?>
   </table>
+  <p class="addinfo"><?php echo $addinfo_jimu;?></p>
  </div>
 
  

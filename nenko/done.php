@@ -43,14 +43,6 @@
       登録情報に変更がある場合は、<a href="#" onclick="outputPDF();">こちら</a>から
   ';
   
-  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
-   $box_title = '脱退連絡受付しました';
-   $header_title = '脱退のご連絡確認しました';
-   $body = '
-       一人親方労災保険RJCをご利用いただき、ありがとうございました。<br>
-       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
-   ';
-  }
   if($nenko_data_unserialize->ShiharaiType() == SHIHARAI_TYPE_CARD){
    $box_title = '継続申込　受付完了';
    $header_title = '継続申込を受付しました';
@@ -69,6 +61,14 @@
        会員カードは、2月8日（木）の振替後、3週間以内に順次発送させていただきます。<br>
        <br>
        登録情報に変更がある場合は、<a href="#" onclick="outputPDF();">こちら</a>から
+   ';
+  }
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       一人親方労災保険RJCをご利用いただき、ありがとうございました。<br>
+       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
    ';
   }
  }
@@ -88,14 +88,6 @@
       登録情報に変更がある場合は、<a href="https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/editinfo.php">こちら</a>から
   ';
   
-  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
-   $box_title = '脱退連絡受付しました';
-   $header_title = '脱退のご連絡確認しました';
-   $body = '
-       一人親方労災保険RJCをご利用いただき、ありがとうございました。<br>
-       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
-   ';
-  }
   if($nenko_data_unserialize->ShiharaiType() == SHIHARAI_TYPE_CARD){
    $box_title = '継続申込　受付完了';
    $header_title = '継続申込を受付しました';
@@ -114,6 +106,14 @@
        会員カードは、2月8日（木）の振替後、3週間以内に順次発送させていただきます。<br>
        <br>
        登録情報に変更がある場合は、<a href="https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/editinfo.php">こちら</a>から
+   ';
+  }
+  if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
+   $box_title = '脱退連絡受付しました';
+   $header_title = '脱退のご連絡確認しました';
+   $body = '
+       一人親方労災保険RJCをご利用いただき、ありがとうございました。<br>
+       一人親方労災保険が必要な時は、いつでも一人親方労災保険RJCにお声がけください。
    ';
   }
  }
@@ -161,7 +161,7 @@
 
      <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
 
-     <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="マイページトップへ">
+     <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="トップページへ">
     </form>
    </div>
   </div>
