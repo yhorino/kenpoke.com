@@ -5,9 +5,9 @@
 
  define('SELECT_JIMUKAISYA','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,Ryoritsu__c,waribikigokaihi__c,CardHakkohiyo__c,dairinenkotaishoninzu__c');
  define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c');
- define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c');
- define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c');
- define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c');
+ define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,dairikingakuannaisofuzumi__c,dairishinchokujokyo__c,dairimoshikomihoho__c');
+ define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,kingakuannaisofu__c');
+ define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c,dairishinchokujokyo__c,dairimoshikomihoho__c');
 
  define('NENDO', '2023年度確定2024年度概算');
 
@@ -23,6 +23,8 @@
  define('SF_OBJECT', 'nendokoshin__c');
 
  define('STATE_MOUSHIKOMI', '申込み受付済み');
+ define('STATE_NYUKINMACHI', '入金待ち');
+ define('STATE_NYUKINZUMI', '入金済み');
  define('STATE_DATTAI', '脱退受付');
 
  define('MOUSHIKOMI_FROM', 'マイページ');
@@ -65,6 +67,7 @@
    $this->_No = $No;
    $this->_Name = '';
    $this->_TradingId = rand(0,99999999).$No;
+   $this->_ShiharaiType = SHIHARAI_TYPE_CARD;
   }
   
   /* 参照関数 */
@@ -257,6 +260,7 @@
    $_orderby = "";
    
    $_result = (array)sf_soql_select($_select, $_from, $_where, $_orderby);
+  setcookie('errorlog', $_select.$_from.$_where);
    if(count($_result) <= 0) return false;
    
    $_row = (array)$_result[0]['fields'];
@@ -299,6 +303,7 @@
     $_row = (array)$_result[$i]['fields'];
     $_nkd_record = new NenkoKanyusyaData($_type, $_row['seirinumber__c']);
     $_nkd_record->getNenkoRecordData();
+    $_nkd_record->setTradingId($this->TradingId());
     $this->_KanyusyaData[] = $_nkd_record;
    }
    
@@ -308,6 +313,7 @@
    $_type = DATATYPE_OYAKATAKANYUSYA;
    $_nkd_record = new NenkoKanyusyaData($_type, $this->_No);
    $_nkd_record->getNenkoRecordData();
+   $_nkd_record->setTradingId($this->TradingId());
    $this->_KanyusyaData[] = $_nkd_record;
    
    return true;
@@ -327,6 +333,7 @@
     $_row = (array)$_result[$i]['fields'];
     $_nkd_record = new NenkoKanyusyaData($_type, $_row['seirinumber__c']);
     $_nkd_record->getNenkoRecordData();
+    $_nkd_record->setTradingId($this->TradingId());
     $this->_KanyusyaData[] = $_nkd_record;
    }
    
@@ -350,31 +357,44 @@
    $_select = UPDATE_DAIRI;
    $_from = SF_OBJECT;
    $_nendo = NENDO;
-   $_where = "dairimadokuchikaishabango__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+//   $_where = "dairimadokuchikaishabango__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+   $_where = "Id = '$this->_Id'";
    $_orderby = "";
    if($this->ShiharaiType()==''){
     $this->setShiharaiType(SHIHARAI_TYPE_CARD);
    }
    if($this->getKeizokusyaNum()>0){
     $_keizoku = STATE_MOUSHIKOMI;
+    if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
+     $_keizoku = STATE_NYUKINMACHI;
+    }
+    if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
+     $_keizoku = STATE_NYUKINZUMI;
+    }
+    $updateitems=array(
+     'dairishinchokujokyo__c'=>$_keizoku,
+     'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
+     'dairihokenryooshiharaisogaku__c'=>$this->_Sougaku,
+     'dairinyukinshubetsu__c'=>$this->ShiharaiType(),
+     'dairinenkotaishoninzu__c'=>$this->CustomerId() // 間違いではない
+    );
+    if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
+     $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
+     $updateitems=array_merge($updateitems, array('dairinyukinkigen__c'=>$_kigen_datetime));
+     $updateitems=array_merge($updateitems, array('dairikingakuannaisofuzumi__c'=>true));
+    }
+    if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
+     $updateitems=array_merge($updateitems, array('dairinyukikingaku__c'=>$this->_Sougaku));
+     $updateitems=array_merge($updateitems, array('dairinyukinkakuninzumi__c'=>true));
+     $updateitems=array_merge($updateitems, array('trading_id__c'=>$this->_TradingId));
+    }
    } else {
     $_keizoku = STATE_DATTAI;
-   }
-   $updateitems=array(
-    'dairishinchokujokyo__c'=>$_keizoku,
-    'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
-    'dairihokenryooshiharaisogaku__c'=>$this->_Sougaku,
-    'dairinyukinshubetsu__c'=>$this->ShiharaiType(),
-    'dairinenkotaishoninzu__c'=>$this->CustomerId() // 間違いではない
-   );
-   if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
-    $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
-    $updateitems=array_merge($updateitems, array('dairinyukinkigen__c'=>$_kigen_datetime));
-   }
-   if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
-    $updateitems=array_merge($updateitems, array('dairinyukikingaku__c'=>$this->_Sougaku));
-    $updateitems=array_merge($updateitems, array('dairinyukinkakuninzumi__c'=>true));
-    $updateitems=array_merge($updateitems, array('trading_id__c'=>$this->_TradingId));
+    $updateitems=array(
+     'dairishinchokujokyo__c'=>$_keizoku,
+     'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
+     'dattaiuketsuke__c'=>true
+    );
    }
    sf_soql_update($_select, $_from, $_where, $_orderby, $updateitems);
    
@@ -392,20 +412,25 @@
    $_select = UPDATE_JIMUKAISYA;
    $_from = SF_OBJECT;
    $_nendo = NENDO;
-   $_where = "dairimadokuchikaishabango__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+//   $_where = "dairimadokuchikaishabango__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+   $_where = "Id = '$this->_Id'";
    $_orderby = "";
    if($this->getKeizokusyaNum()>0){
     $_keizoku = STATE_MOUSHIKOMI;
+    $updateitems=array(
+     'dairishinchokujokyo__c'=>$_keizoku,
+     'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
+     'dairihokenryooshiharaisogaku__c'=>$this->_Sougaku,
+     'hokenryo__c'=>$this->_Hokenryo
+    );
    } else {
     $_keizoku = STATE_DATTAI;
+    $updateitems=array(
+     'dairishinchokujokyo__c'=>$_keizoku,
+     'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
+     'dattaiuketsuke__c'=>true
+    );
    }
-   $updateitems=array(
-    'dairishinchokujokyo__c'=>$_keizoku,
-    'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
-    'dairihokenryooshiharaisogaku__c'=>$this->_Sougaku,
-    'hokenryo__c'=>$this->_Hokenryo,
-    'dairinyukinshubetsu__c'=>$this->ShiharaiType()
-   );
    sf_soql_update($_select, $_from, $_where, $_orderby, $updateitems);
    
    foreach($this->_KanyusyaData as $kd){
@@ -423,6 +448,7 @@
 /* 加入者データ */
 /**********************************************************************/
  class NenkoKanyusyaData{
+  private $_Id;
   private $_Type;
   private $_RecordTypeId;
   private $_Nendo;
@@ -455,6 +481,7 @@
    $this->_Keizoku = 'keizoku';
    $this->_TradingId = rand(0,99999999).$No;
    $this->_DattaiRiyu = '';
+   $this->_ShiharaiType = SHIHARAI_TYPE_CARD;
    // SFの「【年更】脱退理由」項目の選択肢に含まれているか確認すること
    if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
     $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','今は必要ない','従業員を雇った','その他');
@@ -504,6 +531,9 @@
   }
   public function setDattaiRiyu($val){
    $this->_DattaiRiyu = $val;
+  }
+  public function setTradingId($val){
+   $this->_TradingId = $val;
   }
   
   /* 判定関数 */
@@ -556,6 +586,7 @@
    if(count($_result) <= 0) return false;
    
    $_row = (array)$_result[0]['fields'];
+   $this->_Id = $_result[0]['Id'];
    $this->_Name = $_row['shimeisei__c'].'　'.$_row['shimeimei__c'];
    $this->_Nichigaku = intval($_row['genzainonichigaku__c']);
    $this->_Kingaku = intval($_row['SougakuKanyusya__c']);
@@ -575,15 +606,23 @@
    $_select = UPDATE_KOJIN;
    $_from = SF_OBJECT;
    $_nendo = NENDO;
-   $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+//   $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+   $_where = "Id = '$this->_Id'";
    $_orderby = "";
    
    if($this->isKeizoku()){
     if($this->ShiharaiType()==''){
      $this->setShiharaiType(SHIHARAI_TYPE_CARD);
     }
+    $_keizoku = STATE_MOUSHIKOMI;
+    if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
+     $_keizoku = STATE_NYUKINMACHI;
+    }
+    if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
+     $_keizoku = STATE_NYUKINZUMI;
+    }
     $updateitems=array(
-     'shinchokujokyo__c'=>STATE_MOUSHIKOMI,
+     'shinchokujokyo__c'=>$_keizoku,
      'moshikomiuketsuke__c'=>MOUSHIKOMI_FROM,
      'nenkojinichigaku__c'=>$this->NichigakuSel(),
      'nyukinshubetsu__c'=>$this->ShiharaiType()
@@ -591,6 +630,7 @@
     if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
      $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
      $updateitems=array_merge($updateitems, array('nyukinkigen__c'=>$_kigen_datetime));
+     $updateitems=array_merge($updateitems, array('kingakuannaisofu__c'=>true));
     }
     if($this->ShiharaiType() == SHIHARAI_TYPE_CARD){
      $updateitems=array_merge($updateitems, array('nyukinkingaku__c'=>$this->getKingakuSel()));
@@ -601,7 +641,8 @@
     $updateitems=array(
      'shinchokujokyo__c'=>STATE_DATTAI,
      'moshikomiuketsuke__c'=>MOUSHIKOMI_FROM,
-     'dattairiyu__c'=>$this->_DattaiRiyu
+     'dattairiyu__c'=>$this->_DattaiRiyu,
+     'dattaiuketsuke__c'=>true
     );
    }
    

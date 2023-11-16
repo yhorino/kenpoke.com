@@ -39,7 +39,7 @@
    
    <div class="kingaku_box">
     <p>
-     エラーが発生しました。お手数ですが、もう一度最初からやり直してください。
+     エラーが発生しました。お手数ですが、もう一度最初からやり直してください。(<?php echo $_COOKIE['errorcode'].":".$_COOKIE['errorlog'];?>)
     </p>
     
     <a href="<?php echo $top_url;?>" class="submit_button" id="submit_button">トップページへ</a>

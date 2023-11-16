@@ -31,8 +31,8 @@
 
 <div class="flow_path">
  <div class="inner">
-  <span class="flow_item <?php echo $flow_class1;?>">継続対象者選択</span>
-  <span class="flow_item <?php echo $flow_class2;?>">支払金額選択</span>
+  <span class="flow_item <?php echo $flow_class1;?>">継続確認</span>
+  <span class="flow_item <?php echo $flow_class2;?>">金額確認</span>
   <span class="flow_item <?php echo $flow_class3;?>">継続手続完了</span>
  </div>
 </div>

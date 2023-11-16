@@ -15,21 +15,6 @@
  }
 }
 
-@media screen {
- .show_on_print{
-  display: none;
- }
- .hide_on_print{
- }
-}
-@media print {
- .show_on_print{
- }
- .hide_on_print{
-  display: none;
- }
-}
-
 .inner{
  width: 1100px;
  margin: 0 auto;
@@ -73,6 +58,7 @@
 .keizokusya_itembox_grid{
  display: grid;
  gap: 70px;
+ margin-bottom: 50px;
 }
 .keizokusya_itembox {
  padding: 30px;
@@ -137,7 +123,6 @@
 }
 
 .keizokusya_infobox {
- margin: 50px 0 0 0;
  background-color: #D6D6D6;
  padding: 10px;
 }
@@ -311,10 +296,14 @@
  cursor: pointer;
 }
 
+.table_container{
+ container: layout inline-size;
+}
 .keizokusyalist_table {
- width: 100%;
- max-width: 600px;
+ width: 800px;
+ max-width: 75vw;
  margin: 20px auto;
+ table-layout: fixed;
 }
 .keizokusyalist_table th {
  font-weight: normal;
@@ -326,6 +315,44 @@
  border: 1px solid #707070;
  text-align: center;
  padding: 10px;
+ white-space: normal;
+ word-wrap: break-word;
+}
+.keizokusyalist_table th.col_no {
+ width: 3em;
+ min-width: 3em;
+}
+.keizokusyalist_table th.col_name {
+}
+.keizokusyalist_table th.col_kaiinno {
+ width: 8em;
+ min-width: 8em;
+}
+.keizokusyalist_table th.col_nichigaku {
+ width: 8em;
+ min-width: 8em;
+}
+.keizokusyalist_table th.col_sougaku {
+ width: 7em;
+ min-width: 7em;
+}
+
+.keizokusyalist_table.show_sp {
+ width: 100%;
+ max-width: 100%;
+ margin: 20px 0;
+}
+.keizokusyalist_table.show_sp th.col_no {
+ width: 10%;
+}
+.keizokusyalist_table.show_sp th.col_name {
+ width: 40%;
+}
+.keizokusyalist_table.show_sp th.col_nichigaku {
+ width: 25%;
+}
+.keizokusyalist_table.show_sp th.col_sougaku {
+ width: 25%;
 }
 
 .keizokusya_mitsumori_box {
@@ -436,7 +463,7 @@
  margin: 0 auto;
 }
 .shiharai_furikae_box{
- padding: 60px 0px;
+ padding: 20px 0px;
  width: 860px;
  max-width: 100%;
  margin: 0 auto;
@@ -549,67 +576,89 @@
  }
 }
 
-.print_title{
- font-size: 20px;
- margin-top: 20px;
- margin-bottom: 20px;
+
+/* 印刷時 */
+@media screen {
+ .show_on_print{
+  display: none;
+ }
+ .hide_on_print{
+ }
 }
-.print_table_sougaku{
- font-size: 16px;
- margin-bottom: 10px;
+@media print {
+ .show_on_print{
+ }
+ .hide_on_print{
+  display: none;
+ }
 }
-.print_table_sougaku th{
- padding: 1em 0;
- text-align: center;
- border: 1px solid #000;
- width: 12em;
-}
-.print_table_sougaku td{
- padding: 1em 0;
- text-align: center;
- border: 1px solid #000;
- width: 12em;
-}
-.print_table_kikan_ninzu{
- font-size: 16px;
- margin-bottom: 20px;
-}
-.print_table_kikan_ninzu th{
- padding: 0.3em 0;
- text-align: center;
- border: 1px solid #000;
- width: 12em;
-}
-.print_table_kikan_ninzu td{
- padding: 0.3em 0;
- text-align: center;
- border: 1px solid #000;
- width: 12em;
-}
-.print_table_kanyusya{
- font-size: 12px;
- margin-bottom: 0px;
- width: 100%;
-}
-.print_table_kanyusya th{
- padding: 0.5em;
- text-align: center;
- border: 1px solid #000;
-}
-.print_table_kanyusya th.small{
- font-size: 0.7em;
-}
-.print_table_kanyusya td{
- padding: 0.5em;
- text-align: center;
- border: 1px solid #000;
-}
-.print_table_kanyusya .left_border_tick{
- border-left-width: 2px;
-}
-.print_table_kanyusya td.name{
- text-align: left;
-}
-.print_table_kanyusya td.kingaku{
- text-align: right;
+
+@scope (.show_on_print) {
+ .print_title{
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ }
+ .print_table_sougaku{
+  font-size: 16px;
+  margin-bottom: 10px;
+ }
+ .print_table_sougaku th{
+  padding: 1em 0;
+  text-align: center;
+  border: 1px solid #000;
+  width: 12em;
+ }
+ .print_table_sougaku td{
+  padding: 1em 0;
+  text-align: center;
+  border: 1px solid #000;
+  width: 12em;
+ }
+ .print_table_kikan_ninzu{
+  font-size: 16px;
+  margin-bottom: 20px;
+ }
+ .print_table_kikan_ninzu th{
+  padding: 0.3em 0;
+  text-align: center;
+  border: 1px solid #000;
+  width: 12em;
+ }
+ .print_table_kikan_ninzu td{
+  padding: 0.3em 0;
+  text-align: center;
+  border: 1px solid #000;
+  width: 12em;
+ }
+ .print_table_kanyusya{
+  font-size: 12px;
+  margin-bottom: 0px;
+  width: 100%;
+ }
+ .print_table_kanyusya th{
+  padding: 0.5em;
+  text-align: center;
+  border: 1px solid #000;
+ }
+ .print_table_kanyusya th.small{
+  font-size: 0.7em;
+ }
+ .print_table_kanyusya td{
+  padding: 0.5em;
+  text-align: center;
+  border: 1px solid #000;
+ }
+ .print_table_kanyusya .left_border_tick{
+  border-left-width: 2px;
+ }
+ .print_table_kanyusya td.name{
+  text-align: left;
+ }
+ .print_table_kanyusya td.kingaku{
+  text-align: right;
+ }
+ .addinfo{
+  font-size: 10px;
+ }
 }

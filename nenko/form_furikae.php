@@ -7,6 +7,7 @@
 }
 ?>
  <div id="kakunin_furikae_kouza" class="shiharai_box_text">
+  <h3><?php echo $nenko_data_unserialize->Name();?>様は口座振替のご登録済みです。</h3>
   <p><span style="color: red;">振替日は、<?php echo $furikae_date;?>です。</span></p>
   <p>下記ご登録口座より振替となります。事前にご確認をお願いいたします。</p>
   <br>
