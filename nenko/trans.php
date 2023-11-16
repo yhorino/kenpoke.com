@@ -72,8 +72,8 @@
     $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/';
    }
    
-   //$_nextpage = $returl;
-   $_nextpage = 'debugstart.php'; // DEBUG
+   $_nextpage = $returl;
+   //$_nextpage = 'debugstart.php'; // DEBUG
    break;
   }
   default:{
@@ -164,7 +164,7 @@ function calcSougaku_Jimukumiai($nenkodata, $postdata){
  $_jimu_kaisya_kaihi = $nenkodata->Kaihi();
  
  $_jimu_kaihi = $_jimu_kaisya_kaihi + $_kaihi_goukei;
- $_jimu_hokenryo = floor($_santeikisogaku_goukei * $_jimu_ryoritsu);
+ $_jimu_hokenryo = floor(floor($_santeikisogaku_goukei/1000) * ($_jimu_ryoritsu*1000));
  
  $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei;
 
