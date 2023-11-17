@@ -65,11 +65,14 @@
   case 'done':
   {
    $returl = '';
-   if($nenko_data_unserialize->isTypeOyakata()){
-    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/';
+   if($nenko_data_unserialize->isTypeOyakataDairi()){
+    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/dairi_mypage/top.php';
+   }
+   if($nenko_data_unserialize->isTypeOyakataKanyusya()){
+    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/top.php';
    }
    if($nenko_data_unserialize->isTypeJimukumiai()){
-    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/';
+    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/mypage/top.php';
    }
    
    $_nextpage = $returl;

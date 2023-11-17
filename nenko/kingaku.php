@@ -122,7 +122,8 @@
     </div>
 
     <div class="submit_box submit_box_show_shiharai">
-     <input type="button" class="nenko_next button shadow" name="show_shiharai_button" id="show_shiharai_button" value="この内容ですすむ">
+     <button class="back_button" onclick="goBack();">戻る</button>
+     <input type="button" class="submit_button" name="show_shiharai_button" id="show_shiharai_button" value="この内容ですすむ">
     </div>
     
    </div>
@@ -161,6 +162,11 @@
  </div>
  
  <script>
+  function goBack() {
+   event.preventDefault();
+   window.history.back();
+  }
+  
   $furikae = <?php if($nenko_data_unserialize->isFurikae() == true){echo 'true';} else {echo 'false';}?>;
   $(function(){
    
@@ -202,7 +208,7 @@
    
    $('input[name="show_shiharai_button"]').click(function(){
     $('#kingaku_box_shiharai').show();
-    $(this).hide();
+    $('.submit_box_show_shiharai').hide();
    });
    
   });

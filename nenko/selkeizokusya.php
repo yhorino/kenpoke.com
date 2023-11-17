@@ -149,7 +149,7 @@
       </div>
       
       <div class="dattairiyu dattaiitem jimu_hide">
-       <span class="dattairiyu_title">脱退理由</span>
+       <span class="dattairiyu_title">脱退理由 <span class="required_label">【必須】</span></span>
        <div class="dattairiyu_select">
         <?php 
          $items = $kdata->ItemDattaiRiyu();
@@ -185,7 +185,11 @@
    
    <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
 
-   <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="継続手続きを進める">
+   <div class="submit_box">
+    <button class="back_button" onclick="goBack();">戻る</button>
+    <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="継続手続きを進める">
+   </div>
+   
   </div>
   
  </div>
@@ -195,6 +199,12 @@
 <?php include_once('./footer.php'); ?>
  
  <script>
+  
+  function goBack() {
+   event.preventDefault();
+   window.history.back();
+  }
+  
   // ページが読み込まれたら、チェックボックスの状態を初期化する
   window.addEventListener('load', function() {
     $('input[name="info_check"]').prop('checked', false);

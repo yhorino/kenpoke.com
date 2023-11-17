@@ -121,6 +121,10 @@
 .dattairiyu_select label {
  display: inline-block;
 }
+.required_label {
+    color: #f00;
+    font-size: 0.7em;
+}
 
 .keizokusya_infobox {
  background-color: #D6D6D6;
@@ -249,6 +253,24 @@
  margin: 20px auto;
 }
 
+.submit_box {
+ display: flex;
+ justify-content: center;
+ margin: 20px 0;
+ gap: 20px;
+}
+.back_button{
+ display: block;
+ text-align: center;
+ padding: 20px;
+ background-color: #ccc;
+ color: #222;
+ border-radius: 50px;
+ cursor: pointer;
+ border: none;
+ width: min(100%, 130px);
+ text-decoration: none;
+}
 .submit_button {
  display: block;
  text-align: center;
@@ -258,7 +280,7 @@
  border-radius: 50px;
  cursor: pointer;
  border: none;
- margin: 0 auto 40px auto;
+ /*margin: 0 auto 40px auto;*/
  width: min(100%, 400px);
  text-decoration: none;
 }
@@ -396,11 +418,6 @@
 }
 .keizokusya_mitsumori_addinfo {
  font-size: 14px;
-}
-.submit_box {
- display: flex;
- justify-content: center;
- margin: 20px 0;
 }
 .nenko_next {
  width: min(100%, 400px);

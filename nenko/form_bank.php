@@ -59,6 +59,9 @@ $kigen_max_disp = $kigen_max_disp.'('.$kigen_max_dow.')';
 
  <input type="hidden" name="nenko_data" value="<?php echo base64_encode($_SESSION['nenko_data']);?>">
 
- <input type="submit" class="submit_button" name="submit_button" id="submit_button" value="次へすすむ">
+ <div class="submit_box">
+ <button class="back_button" onclick="goBack();">戻る</button>
+ <input type="submit" class="submit_button" 　id="submit_button" name="submit_button" value="次へすすむ">
+ </div>
   
  </form>

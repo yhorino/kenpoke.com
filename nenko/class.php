@@ -484,10 +484,10 @@
    $this->_ShiharaiType = SHIHARAI_TYPE_CARD;
    // SFの「【年更】脱退理由」項目の選択肢に含まれているか確認すること
    if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
-    $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','今は必要ない','従業員を雇った','その他');
+    $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','従業員を雇った','その他');
    }
    if($this->_Type == DATATYPE_JIMUKANYUSYA){
-    $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','今は必要ない','従業員を雇った','その他');
+    $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','従業員を雇った','その他');
    }
   }
   

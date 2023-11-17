@@ -85,7 +85,8 @@
  </p>
 
  <div class="submit_box">
- <input type="submit" class="nenko_next button shadow" 　id="shiharai_card_next_button" name="shiharai_card_next_button" value="決済画面へすすむ">
+ <button class="back_button" onclick="goBack();">戻る</button>
+ <input type="submit" class="submit_button" 　id="shiharai_card_next_button" name="shiharai_card_next_button" value="決済画面へすすむ">
  </div>
 
  <p class="card_submit_info">※ クレジットカード決済の画面から進まない場合は、<?php echo $toiawase;?>までお電話ください。
