@@ -4,7 +4,7 @@
  define('SELECT_KOJIN','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,ordernumber__c,waribikigokaihi__c,CardHakkohiyo__c');
 
  define('SELECT_JIMUKAISYA','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,Ryoritsu__c,waribikigokaihi__c,CardHakkohiyo__c,dairinenkotaishoninzu__c');
- define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c');
+ define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c,dairikaisha__c');
  define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,dairikingakuannaisofuzumi__c,dairishinchokujokyo__c,dairimoshikomihoho__c');
  define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,kingakuannaisofu__c');
  define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c,dairishinchokujokyo__c,dairimoshikomihoho__c');
@@ -332,6 +332,7 @@
    for($i=0;$i<count($_result);$i++){
     $_row = (array)$_result[$i]['fields'];
     $_nkd_record = new NenkoKanyusyaData($_type, $_row['seirinumber__c']);
+    $_nkd_record->setKaisyaId($this->_Id);
     $_nkd_record->getNenkoRecordData();
     $_nkd_record->setTradingId($this->TradingId());
     $this->_KanyusyaData[] = $_nkd_record;
@@ -469,6 +470,7 @@
   private $_TradingId;
   private $_CardHakkohiyo;
   private $_DattaiRiyu;
+  private $_KaisyaId;
 
   private $_Keizoku;
   
@@ -482,6 +484,7 @@
    $this->_TradingId = rand(0,99999999).$No;
    $this->_DattaiRiyu = '';
    $this->_ShiharaiType = SHIHARAI_TYPE_CARD;
+   $this->_KaisyaId = '';
    // SFの「【年更】脱退理由」項目の選択肢に含まれているか確認すること
    if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
     $this->_ItemDattaiRiyu = array('就職した','建設業をやめた','次の現場が決まってない','従業員を雇った','その他');
@@ -506,6 +509,7 @@
   public function ShiharaiType(){return $this->_ShiharaiType;}
   public function TradingId(){return $this->_TradingId;}
   public function ItemDattaiRiyu(){return $this->_ItemDattaiRiyu;}
+  public function KaisyaId(){return $this->_KaisyaId;}
 
   /* 更新関数 */
   public function setKeizoku($val){
@@ -534,6 +538,9 @@
   }
   public function setTradingId($val){
    $this->_TradingId = $val;
+  }
+  public function setKaisyaId($val){
+   $this->_KaisyaId = $val;
   }
   
   /* 判定関数 */
@@ -573,13 +580,15 @@
   public function getNenkoRecordData(){
    if($this->_Type == DATATYPE_OYAKATAKANYUSYA){
     $_select = SELECT_KOJIN;
+    $_kaisyaid = '';
    }
    if($this->_Type == DATATYPE_JIMUKANYUSYA){
     $_select = SELECT_JIMUKANYUSYA;
+    $_kaisyaid = ' AND dairikaisha__c = \''.$this->KaisyaId().'\' ';
    }
    $_from = SF_OBJECT;
    $_nendo = NENDO;
-   $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'";
+   $_where = "seirinumber__c = '$this->_No' AND Nendo__c = '$_nendo' AND Type__c = '$this->_Type'".$_kaisyaid;
    $_orderby = "";
    
    $_result = (array)sf_soql_select($_select, $_from, $_where, $_orderby);
