@@ -6,9 +6,9 @@
  $nenko_data_unserialize = unserialize($_SESSION['nenko_data']);
  include('./session_check.php');
 
- $keizokusya_itembox_style = '';
+ $keizokusya_itembox_class = '';
  if($nenko_data_unserialize->isTypeJimukumiai()){
-  $keizokusya_itembox_style = ' style="grid-template-columns: 1fr 200px 220px;" ';
+  $keizokusya_itembox_class = ' jimu_itembox ';
  }
 ?>
 
@@ -39,7 +39,7 @@
   
   <?php /* 見本 */ ?>
   <div class="inner">
-    <div class="keizokusya_itembox keizokusya_itembox_mihon" <?php echo $keizokusya_itembox_style;?>>
+    <div class="keizokusya_itembox keizokusya_itembox_mihon <?php echo $keizokusya_itembox_class;?>">
      <div class="mihon_title">見本</div>
      <div class="mihon_comment mihon_comment1">①「継続」「脱退」のどちらかを選択してください</div>
      <div class="mihon_comment mihon_comment2">②給付基礎日額の変更はこちらから</div>
@@ -101,7 +101,7 @@
      if($kdata->isKeizoku()){ $sel1 = 'checked';}
      else { $sel2 = 'checked'; $dattai_class='dattai';}
     ?>
-    <div class="keizokusya_itembox <?php echo $dattai_class;?>" <?php echo $keizokusya_itembox_style;?>>
+    <div class="keizokusya_itembox <?php echo $dattai_class;?> <?php echo $keizokusya_itembox_class;?>">
      <div class="keizokusya_itembox_left">
       <span class="keizokusya_no"><?php echo $kdata->No();?></span>
       <span class="keizokusya_name"><?php echo $kdata->Name();?></span>
@@ -134,6 +134,17 @@
       
       <div class="change_nichigaku_box keizokuitem">
        
+       <?php if($nenko_data_unserialize->isTypeJimukumiai() && $kdata->isKanyuThisYear()) { ?>
+       <div id="nichigaku_title<?php echo $i;?>" class="change_nichigaku_title nochange" onclick="change_nichigaku_title_click('<?php echo $i;?>');">※ 給付基礎日額は変更できません ▼</div>
+       
+       <div class="change_nichigaku_body nochange">
+        
+        <p>
+        加入期間が1年未満のため、変更できません。<br>次回更新時に変更することが可能です。
+        </p>
+        
+       </div>
+       <?php } else { ?>
        <div id="nichigaku_title<?php echo $i;?>" class="change_nichigaku_title" onclick="change_nichigaku_title_click('<?php echo $i;?>');">給付基礎日額を変更する ▼</div>
        
        <div class="change_nichigaku_body">
@@ -145,7 +156,8 @@
         <label id="cnb<?php echo $i;?>_now" class="change_nichigaku_button buttonC" onclick="change_nichigaku_button_click(<?php echo $i;?>,'now');"><input type="radio" name="change_nichigaku<?php echo $i;?>" value="<?php echo $kdata->Nichigaku();?>" checked>現在の日額　<?php echo number_format($kdata->Nichigaku());?>円</label>
         
        </div>
-      
+       <?php } ?>
+       
       </div>
       
       <div class="dattairiyu dattaiitem jimu_hide">

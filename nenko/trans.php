@@ -168,11 +168,14 @@ function calcSougaku_Jimukumiai($nenkodata, $postdata){
  
  $_jimu_kaihi = $_jimu_kaisya_kaihi + $_kaihi_goukei;
  $_jimu_hokenryo = floor(floor($_santeikisogaku_goukei/1000) * ($_jimu_ryoritsu*1000));
+ $_koho_itakuhi = $nenkodata->KohoItakuhi();
  
- $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei;
+ $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei + $_koho_itakuhi;
 
  $nenkodata->setHokenryo($_jimu_hokenryo);
  $nenkodata->setSougaku($_sougaku);
+ $nenkodata->setKaihiSougaku($_jimu_kaihi);
+ $nenkodata->setCardSougaku($_cardhakkou_goukei);
  
  return $nenkodata;
 }

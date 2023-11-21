@@ -74,6 +74,10 @@
  pointer-events: none;
  position: relative;
 }
+.keizokusya_itembox_mihon.jimu_itembox {
+ grid-template-columns: 1fr 200px 220px;
+}
+
 .mihon_title {
  position: absolute;
  top: -30px;
@@ -105,6 +109,9 @@
  bottom: -23px;
  right: 2%;
  z-index: 10;
+}
+.keizokusya_itembox.jimu_itembox {
+ grid-template-columns: 1fr 200px 220px;
 }
 .keizokusya_itembox.dattai {
  background-color: #ccc;
@@ -245,6 +252,18 @@
  background-color: #ccc!important;
  color: #777!important;
  cursor: default!important;
+}
+
+.change_nichigaku_title.nochange {
+ background-color: #666;
+ font-size: 12px;
+}
+.change_nichigaku_body.nochange {
+ display: block;
+ font-size: 14px;
+ text-align: left;
+ padding: 0 15px;
+ border-color: #666;
 }
 
 .info_check {
@@ -499,6 +518,7 @@
  .inner {
   width: 90%;
  }
+ .keizokusya_itembox.jimu_itembox,
  .keizokusya_itembox{
   grid-template-columns: 1fr;
   gap: 10px;
