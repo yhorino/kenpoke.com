@@ -16,6 +16,17 @@
       登録情報に変更がある場合は、<a href="https://www.xn--y5q0r2lqcz91qdrc.com/mypage/kaisya.php">こちら</a>から
   ';
   
+  if($nenko_data_unserialize->ShiharaiType() == SHIHARAI_TYPE_BANK){
+   $box_title = '継続申込　受付完了';
+   $header_title = 'メールをご確認ください';
+   $body = '
+       ご継続申込いただき、ありがとうございました。<br>
+       お振込先のメールを送信しています。<br>
+       期限内に必ず振込ください。<br>
+       なお、会員カードは、お支払い完了から３週間以内に順次発送させていただきます。
+       ';
+  }
+  
   if($nenko_data_unserialize->getKeizokusyaNum() <= 0){
    $box_title = '脱退連絡受付しました';
    $header_title = '営業時間内にお電話ください';

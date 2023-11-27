@@ -436,7 +436,7 @@
  padding: 5px 0;
 }
 .keizokusya_mitsumori_addinfo {
- font-size: 14px;
+ font-size: clamp(9px, 2vw, 14px);
 }
 .nenko_next {
  width: min(100%, 400px);

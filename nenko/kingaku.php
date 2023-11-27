@@ -140,7 +140,7 @@
      <span class=""></span>
     </h3>
     <div class="shiharai_buttons_box">
-     <label class="shiharai_button" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
+     <label class="shiharai_button jimu_disabled" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
      <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="<?php echo SHIHARAI_TYPE_BANK;?>">銀行振込</label>
      <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="<?php echo SHIHARAI_TYPE_FURIKAE;?>">口座振替</label>
     </div>
@@ -173,6 +173,7 @@
   }
   
   $furikae = <?php if($nenko_data_unserialize->isFurikae() == true){echo 'true';} else {echo 'false';}?>;
+  $jimu = <?php if($nenko_data_unserialize->isTypeJimukumiai() == true){echo 'true';} else {echo 'false';}?>;
   $(function(){
    
    disp_init();
@@ -186,6 +187,18 @@
     //$('#shiharai_furikae_label').hide();
     $('#shiharai_furikae').prop('checked', true);
     //$('.shiharai_buttons_box').addClass('buttons_furikae');
+   } else {
+    $('#shiharai_card_box').show();
+    $('#shiharai_card').prop('checked', true);
+    $('#shiharai_furikae_label').hide();
+   }
+   if($furikae == false && $jimu == true){
+    $('#shiharai_card_box').hide();
+    $('#shiharai_bank_box').show();
+    $('#kakunin_bank').show()
+    $('#shiharai_bank').prop('checked', true);
+    $('#shiharai_furikae_label').hide();
+    $('#shiharai_card').prop('disabled', true);
    } else {
     $('#shiharai_card_box').show();
     $('#shiharai_card').prop('checked', true);

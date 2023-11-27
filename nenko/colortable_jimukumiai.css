@@ -7,3 +7,10 @@
 .jimu_hide{
  display: none!important;
 }
+.jimu_disabled {
+    box-shadow: none!important;
+    background-color: #ccc;
+    color: #999;
+    border: none;
+    cursor: default;
+}

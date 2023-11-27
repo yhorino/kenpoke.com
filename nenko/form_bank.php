@@ -37,7 +37,7 @@ $kigen_max_disp = $kigen_max_disp.'('.$kigen_max_dow.')';
     <a id="popup_kakutei">確定</a>
     <p id="kigen_err"><?php echo $kigen_disp;?>～<?php echo $kigen_max_disp;?>の間で指定してください。</p>
    </div>
-   <p class="p3">※ 一度振込期限を過ぎますと新規申込みとなります。<br>
+   <p class="p3 jimu_hide">※ 一度振込期限を過ぎますと新規申込みとなります。<br>
 　 <span style="color: red;">新規申込では、継続特別価格は適用されません。</span><br>
     お振込みできるタイミングで再度お手続きいただくか、<br>　別のお支払方法を選択してください。</p>
   </div>
