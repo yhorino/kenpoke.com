@@ -74,6 +74,10 @@
  pointer-events: none;
  position: relative;
 }
+.keizokusya_itembox_mihon.jimu_itembox {
+ grid-template-columns: 1fr 200px 220px;
+}
+
 .mihon_title {
  position: absolute;
  top: -30px;
@@ -106,6 +110,9 @@
  right: 2%;
  z-index: 10;
 }
+.keizokusya_itembox.jimu_itembox {
+ grid-template-columns: 1fr 200px 220px;
+}
 .keizokusya_itembox.dattai {
  background-color: #ccc;
 }
@@ -120,6 +127,10 @@
 }
 .dattairiyu_select label {
  display: inline-block;
+}
+.required_label {
+    color: #f00;
+    font-size: 0.7em;
 }
 
 .keizokusya_infobox {
@@ -243,12 +254,42 @@
  cursor: default!important;
 }
 
+.change_nichigaku_title.nochange {
+ background-color: #666;
+ font-size: 12px;
+}
+.change_nichigaku_body.nochange {
+ display: block;
+ font-size: 14px;
+ text-align: left;
+ padding: 0 15px;
+ border-color: #666;
+}
+
 .info_check {
  display: block;
  width: 200px;
  margin: 20px auto;
 }
 
+.submit_box {
+ display: flex;
+ justify-content: center;
+ margin: 20px 0;
+ gap: 20px;
+}
+.back_button{
+ display: block;
+ text-align: center;
+ padding: 20px;
+ background-color: #ccc;
+ color: #222;
+ border-radius: 50px;
+ cursor: pointer;
+ border: none;
+ width: min(100%, 130px);
+ text-decoration: none;
+}
 .submit_button {
  display: block;
  text-align: center;
@@ -258,7 +299,7 @@
  border-radius: 50px;
  cursor: pointer;
  border: none;
- margin: 0 auto 40px auto;
+ /*margin: 0 auto 40px auto;*/
  width: min(100%, 400px);
  text-decoration: none;
 }
@@ -395,12 +436,7 @@
  padding: 5px 0;
 }
 .keizokusya_mitsumori_addinfo {
- font-size: 14px;
-}
-.submit_box {
- display: flex;
- justify-content: center;
- margin: 20px 0;
+ font-size: clamp(9px, 2vw, 14px);
 }
 .nenko_next {
  width: min(100%, 400px);
@@ -482,6 +518,7 @@
  .inner {
   width: 90%;
  }
+ .keizokusya_itembox.jimu_itembox,
  .keizokusya_itembox{
   grid-template-columns: 1fr;
   gap: 10px;

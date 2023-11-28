@@ -14,6 +14,11 @@
 国による来年度の労災保険料率の確定は、1月以降です。
 料率確定後の最終金額は、2月9日（金）に発送される納入通知書をご確認ください。');
  }
+ $kohoitakuhi = '';
+ if($nenko_data_unserialize->KohoItakuhi() > 0){
+  $kohoitakuhi = '、雇用保険委託費';
+ }
+
 ?>
 
 <!doctype html>
@@ -118,11 +123,12 @@
        <span class="keizokusya_mitsumori_info_line_text"><?php echo $nenko_data_unserialize->getKeizokusyaNum();?> 名</span>
       </div>
      </div>
-     <p class="keizokusya_mitsumori_addinfo">※ お支払総額には会費、保険料、プレミアムカード発行費用が含まれています。<?php echo $addinfo_jimu;?></p>
+     <p class="keizokusya_mitsumori_addinfo">※ お支払総額には会費、保険料、プレミアムカード発行費用<?php echo $kohoitakuhi;?>が含まれています。<?php echo $addinfo_jimu;?></p>
     </div>
 
     <div class="submit_box submit_box_show_shiharai">
-     <input type="button" class="nenko_next button shadow" name="show_shiharai_button" id="show_shiharai_button" value="この内容ですすむ">
+     <button class="back_button" onclick="goBack();">戻る</button>
+     <input type="button" class="submit_button" name="show_shiharai_button" id="show_shiharai_button" value="この内容ですすむ">
     </div>
     
    </div>
@@ -134,7 +140,7 @@
      <span class=""></span>
     </h3>
     <div class="shiharai_buttons_box">
-     <label class="shiharai_button" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
+     <label class="shiharai_button jimu_disabled" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
      <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="<?php echo SHIHARAI_TYPE_BANK;?>">銀行振込</label>
      <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="<?php echo SHIHARAI_TYPE_FURIKAE;?>">口座振替</label>
     </div>
@@ -161,7 +167,13 @@
  </div>
  
  <script>
+  function goBack() {
+   event.preventDefault();
+   window.history.back();
+  }
+  
   $furikae = <?php if($nenko_data_unserialize->isFurikae() == true){echo 'true';} else {echo 'false';}?>;
+  $jimu = <?php if($nenko_data_unserialize->isTypeJimukumiai() == true){echo 'true';} else {echo 'false';}?>;
   $(function(){
    
    disp_init();
@@ -175,6 +187,18 @@
     //$('#shiharai_furikae_label').hide();
     $('#shiharai_furikae').prop('checked', true);
     //$('.shiharai_buttons_box').addClass('buttons_furikae');
+   } else {
+    $('#shiharai_card_box').show();
+    $('#shiharai_card').prop('checked', true);
+    $('#shiharai_furikae_label').hide();
+   }
+   if($furikae == false && $jimu == true){
+    $('#shiharai_card_box').hide();
+    $('#shiharai_bank_box').show();
+    $('#kakunin_bank').show()
+    $('#shiharai_bank').prop('checked', true);
+    $('#shiharai_furikae_label').hide();
+    $('#shiharai_card').prop('disabled', true);
    } else {
     $('#shiharai_card_box').show();
     $('#shiharai_card').prop('checked', true);
@@ -202,7 +226,7 @@
    
    $('input[name="show_shiharai_button"]').click(function(){
     $('#kingaku_box_shiharai').show();
-    $(this).hide();
+    $('.submit_box_show_shiharai').hide();
    });
    
   });

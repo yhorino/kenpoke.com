@@ -65,11 +65,14 @@
   case 'done':
   {
    $returl = '';
-   if($nenko_data_unserialize->isTypeOyakata()){
-    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/';
+   if($nenko_data_unserialize->isTypeOyakataDairi()){
+    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/dairi_mypage/top.php';
+   }
+   if($nenko_data_unserialize->isTypeOyakataKanyusya()){
+    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/top.php';
    }
    if($nenko_data_unserialize->isTypeJimukumiai()){
-    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/';
+    $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/mypage/top.php';
    }
    
    $_nextpage = $returl;
@@ -165,11 +168,14 @@ function calcSougaku_Jimukumiai($nenkodata, $postdata){
  
  $_jimu_kaihi = $_jimu_kaisya_kaihi + $_kaihi_goukei;
  $_jimu_hokenryo = floor(floor($_santeikisogaku_goukei/1000) * ($_jimu_ryoritsu*1000));
+ $_koho_itakuhi = $nenkodata->KohoItakuhi();
  
- $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei;
+ $_sougaku = $_jimu_hokenryo + $_jimu_kaihi + $_cardhakkou_goukei + $_koho_itakuhi;
 
  $nenkodata->setHokenryo($_jimu_hokenryo);
  $nenkodata->setSougaku($_sougaku);
+ $nenkodata->setKaihiSougaku($_jimu_kaihi);
+ $nenkodata->setCardSougaku($_cardhakkou_goukei);
  
  return $nenkodata;
 }
