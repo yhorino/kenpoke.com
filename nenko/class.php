@@ -438,7 +438,8 @@
      'dairihokenryooshiharaisogaku__c'=>$this->_Sougaku,
      'hokenryo__c'=>$this->_Hokenryo,
      'jimukaisyapurasukanyusyagoukei__c'=>$this->_KaihiSougaku,
-     'nenkoudairikaiinkadohakkouhiyou__c'=>$this->_CardSougaku
+     'nenkoudairikaiinkadohakkouhiyou__c'=>$this->_CardSougaku,
+     'dairinenkotaishoninzu__c'=>$this->CustomerId() // 間違いではない
     );
    } else {
     $_keizoku = STATE_DATTAI;
@@ -447,6 +448,11 @@
      'dairimoshikomihoho__c'=>MOUSHIKOMI_FROM,
      'dattaiuketsuke__c'=>true
     );
+   }
+   if($this->ShiharaiType() == SHIHARAI_TYPE_BANK){
+    $_kigen_datetime = $this->_ShiharaiKigen."T00:00:00+09:00";
+    $updateitems=array_merge($updateitems, array('dairinyukinkigen__c'=>$_kigen_datetime));
+    $updateitems=array_merge($updateitems, array('dairikingakuannaisofuzumi__c'=>true));
    }
    sf_soql_update($_select, $_from, $_where, $_orderby, $updateitems);
    

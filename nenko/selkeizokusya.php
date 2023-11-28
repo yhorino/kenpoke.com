@@ -244,8 +244,10 @@
     $keizoku_count = document.querySelectorAll('input.keizoku_button:checked').length;
     if($keizoku_count <= 0){
      $('#keizokusya_info_dispbox').hide();
+     $("#submit_button").val('脱退手続きを進める');
     } else {
      $('#keizokusya_info_dispbox').show();
+     $("#submit_button").val('継続手続きを進める');
     }
    });
    
