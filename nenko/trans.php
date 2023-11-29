@@ -66,10 +66,12 @@
   {
    $returl = '';
    if($nenko_data_unserialize->isTypeOyakataDairi()){
-    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/dairi_mypage/top.php';
+//    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/dairi_mypage/top.php';
+    $returl = 'https://www.xn--u9j030g7pan0b35gwu1bj0pb79budya.tokyo/mailform_new/dairi_mypage/top.php';
    }
    if($nenko_data_unserialize->isTypeOyakataKanyusya()){
-    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/top.php';
+//    $returl = 'https://www.xn--4gqprf2ac7ft97aryo6r5b3ov.tokyo/mailform_new/mypage/top.php';
+    $returl = 'https://www.xn--u9j030g7pan0b35gwu1bj0pb79budya.tokyo/mailform_new/mypage/top.php';
    }
    if($nenko_data_unserialize->isTypeJimukumiai()){
     $returl = 'https://www.xn--y5q0r2lqcz91qdrc.com/mypage/top.php';
