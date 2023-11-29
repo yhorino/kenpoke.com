@@ -12,8 +12,6 @@
   <p>下記ご登録口座より振替となります。事前にご確認をお願いいたします。</p>
   <br>
   <p><?php echo nl2br($nenko_data_unserialize->getKozaJohoMasked());?></p>
-  <br>
-  <p>※ ご登録の口座情報を変更される場合は、必ず<?php echo $telno;?>までお電話ください。</p>
  </div>
 
  <form name="form" method="post" action="trans.php">
