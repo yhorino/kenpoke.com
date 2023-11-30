@@ -191,7 +191,16 @@
     $('#shiharai_card_box').show();
     $('#shiharai_card').prop('checked', true);
     $('#shiharai_furikae_label').hide();
+    if($jimu == true){
+     $('#shiharai_card_box').hide();
+     $('#shiharai_bank_box').show();
+     $('#kakunin_bank').show()
+     $('#shiharai_bank').prop('checked', true);
+     $('#shiharai_furikae_label').hide();
+     $('#shiharai_card').prop('disabled', true);
+    }
    }
+   /*
    if($jimu == true){
     if($furikae == false){
      $('#shiharai_card_box').hide();
@@ -206,6 +215,7 @@
      $('#shiharai_furikae_label').hide();
     }
    }
+   */
    
    $('input[name="shiharai_sel"]').change(function(){
     $sel = $('input[name="shiharai_sel"]:checked').val();
