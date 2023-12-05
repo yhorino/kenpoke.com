@@ -136,10 +136,10 @@
    <div class="kingaku_box" id="kingaku_box_shiharai">
     <h3 class="keizokusyalist_header">
      <span class="keizokusyalist_header_title">お支払方法</span>
-     <span class=""></span>
+     <span class="keizokusyalist_header_shiharaitype"></span>
      <span class=""></span>
     </h3>
-    <div class="shiharai_buttons_box">
+    <div class="shiharai_buttons_box jimu_hide">
      <label class="shiharai_button jimu_disabled" id="shiharai_card_label"><input type="radio" name="shiharai_sel" id="shiharai_card" value="<?php echo SHIHARAI_TYPE_CARD;?>" checked>クレジットカード</label>
      <label class="shiharai_button" id="shiharai_bank_label"><input type="radio" name="shiharai_sel" id="shiharai_bank" value="<?php echo SHIHARAI_TYPE_BANK;?>">銀行振込</label>
      <label class="shiharai_button" id="shiharai_furikae_label"><input type="radio" name="shiharai_sel" id="shiharai_furikae" value="<?php echo SHIHARAI_TYPE_FURIKAE;?>">口座振替</label>
@@ -187,6 +187,7 @@
     //$('#shiharai_furikae_label').hide();
     $('#shiharai_furikae').prop('checked', true);
     //$('.shiharai_buttons_box').addClass('buttons_furikae');
+    $('.keizokusyalist_header_shiharaitype').text('<?php echo SHIHARAI_TYPE_FURIKAE;?>');
    } else {
     $('#shiharai_card_box').show();
     $('#shiharai_card').prop('checked', true);
@@ -198,6 +199,7 @@
      $('#shiharai_bank').prop('checked', true);
      $('#shiharai_furikae_label').hide();
      $('#shiharai_card').prop('disabled', true);
+     $('.keizokusyalist_header_shiharaitype').text('<?php echo SHIHARAI_TYPE_BANK;?>');
     }
    }
    /*
@@ -221,6 +223,7 @@
     $sel = $('input[name="shiharai_sel"]:checked').val();
     
     disp_init();
+    $('.keizokusyalist_header_shiharaitype').text($sel);
     if($sel == '<?php echo SHIHARAI_TYPE_CARD;?>'){
      $('#shiharai_card_box').show();
      return;
@@ -248,6 +251,7 @@
    $('#shiharai_furikae_box').hide();
    $('#kakunin_bank').hide()
    $('#cal_div').hide();
+   $('.keizokusyalist_header_shiharaitype').text('<?php echo SHIHARAI_TYPE_CARD;?>');
   }
  </script>
  
