@@ -10,6 +10,12 @@
  if($nenko_data_unserialize->isTypeJimukumiai()){
   $keizokusya_itembox_class = ' jimu_itembox ';
  }
+
+// 日額変更許可フラグ設定
+define ('NICHIGAKU_CHANGE_OK', 1);
+define ('NICHIGAKU_CHANGE_NG', -1);
+$NICHIGAKU_CHANGE = NICHIGAKU_CHANGE_OK;
+
 ?>
 
 <!doctype html>
@@ -134,7 +140,17 @@
       
       <div class="change_nichigaku_box keizokuitem">
        
-       <?php if($nenko_data_unserialize->isTypeJimukumiai() && $kdata->isKanyuThisYear()) { ?>
+       <?php if($NICHIGAKU_CHANGE == NICHIGAKU_CHANGE_NG) { ?>
+       <div id="nichigaku_title<?php echo $i;?>" class="change_nichigaku_title nochange" onclick="change_nichigaku_title_click('<?php echo $i;?>');">※ 給付基礎日額は変更できません ▼</div>
+       
+       <div class="change_nichigaku_body nochange">
+        
+        <p>
+        更新期限後のため、変更できません。<br>次回更新時に変更することが可能です。
+        </p>
+        
+       </div>
+       <?php } else if($nenko_data_unserialize->isTypeJimukumiai() && $kdata->isKanyuThisYear()) { ?>
        <div id="nichigaku_title<?php echo $i;?>" class="change_nichigaku_title nochange" onclick="change_nichigaku_title_click('<?php echo $i;?>');">※ 給付基礎日額は変更できません ▼</div>
        
        <div class="change_nichigaku_body nochange">
