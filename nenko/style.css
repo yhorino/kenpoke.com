@@ -326,6 +326,9 @@
  font-weight: normal;
  font-size: 16px;
 }
+.keizokusyalist_header.shiharai_header{
+ grid-template-columns: 6em 1fr 100px;
+}
 .keizokusyalist_header.oneline {
  grid-template-columns: 1fr;
 }
@@ -543,6 +546,10 @@
       "title button"
       "info button";
   align-items: center;
+ }
+ .keizokusyalist_header.shiharai_header{
+  grid-template-columns: 6em 1fr;
+  font-size: 14px;
  }
  .keizokusyalist_header_title {
   grid-area: title;

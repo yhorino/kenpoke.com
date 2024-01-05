@@ -527,13 +527,23 @@
   public function Kingaku10000(){return $this->_Kingaku10000;}
   public function Keizoku(){return $this->_Keizoku;}
   public function KozaJoho(){return $this->_KozaJoho;}
-  public function Kaihi(){return $this->_Kaihi;}
+//  public function Kaihi(){return $this->_Kaihi;}
   public function CardHakkohiyo(){return $this->_CardHakkohiyo;}
   public function ShiharaiType(){return $this->_ShiharaiType;}
   public function TradingId(){return $this->_TradingId;}
   public function ItemDattaiRiyu(){return $this->_ItemDattaiRiyu;}
   public function KaisyaId(){return $this->_KaisyaId;}
 
+  public function Kaihi(){
+   if(intval($this->_NichigakuSel) == 3500){
+    return 7277;
+   }
+   if(intval($this->_NichigakuSel) == 10000){
+    return 9650;
+   }
+   return $this->_Kaihi;
+  }
+  
   /* 更新関数 */
   public function setKeizoku($val){
    if($val == 'keizoku'){
@@ -601,7 +611,7 @@
    return $_santeikisogakusel;
   }
   public function getHokenryo(){
-   return intval($this->getKingakuSel()) - intval($this->_Kaihi) - intval($this->_CardHakkohiyo);
+   return intval($this->getKingakuSel()) - intval($this->Kaihi()) - intval($this->_CardHakkohiyo);
   }
   
   
