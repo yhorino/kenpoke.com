@@ -539,13 +539,17 @@
   public function Waribikigaku(){return $this->_Waribikigaku;}
 
   public function Kaihi(){
-   if(intval($this->_NichigakuSel) == 3500){
-    return 7277-intval($this->Waribikigaku());
+   if($this->_Type == DATATYPE_JIMUKANYUSYA){
+    return $this->_Kaihi;
+   } else {
+    if(intval($this->_NichigakuSel) == 3500){
+     return 7277-intval($this->Waribikigaku());
+    }
+    if(intval($this->_NichigakuSel) == 10000){
+     return 9650-intval($this->Waribikigaku());
+    }
+    return $this->_Kaihi;
    }
-   if(intval($this->_NichigakuSel) == 10000){
-    return 9650-intval($this->Waribikigaku());
-   }
-   return $this->_Kaihi;
   }
   
   /* 更新関数 */
