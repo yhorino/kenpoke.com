@@ -1,6 +1,6 @@
 <?php
-  $mode = -1; // DEBUG
-  //$mode = 0;
+  //$mode = -1; // DEBUG
+  $mode = 0;
 
   $merchant_name = '一人親方労災保険ＲＪＣ';
   $payment_detail = '一人親方年度更新';

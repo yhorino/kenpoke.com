@@ -1,12 +1,12 @@
 <?php
  include_once('../bin/sf_Api.php');
- define('SELECT_DAIRI','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,dairinenkotaishoninzu__c,waribikigokaihi__c,dairikaishameifurigana__c,dairiyubimbango__c,dairitodofuken__c,dairishikugun__c,dairichomeibanchi__c,dairidaihyosha__c,dairidaihyoshafurigana__c,dairitantosha__c,dairitantoshafurigana__c,dairidenwabango__c,dairifuakkusubango__c,dairitantosharenrakusaki__c,dairimail__c');
- define('SELECT_KOJIN','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,ordernumber__c,waribikigokaihi__c,CardHakkohiyo__c,kanyubi__c');
+ define('SELECT_DAIRI','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,dairinenkotaishoninzu__c,waribikigokaihi__c,dairikaishameifurigana__c,dairiyubimbango__c,dairitodofuken__c,dairishikugun__c,dairichomeibanchi__c,dairidaihyosha__c,dairidaihyoshafurigana__c,dairitantosha__c,dairitantoshafurigana__c,dairidenwabango__c,dairifuakkusubango__c,dairitantosharenrakusaki__c,dairimail__c,waribikigaku__c');
+ define('SELECT_KOJIN','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,ordernumber__c,waribikigokaihi__c,CardHakkohiyo__c,kanyubi__c,waribikigaku__c');
 
  define('SELECT_JIMUKAISYA','Id,dairikaishamei__c,kofurikaishu__c,KouzaJyouhou__c,Ryoritsu__c,waribikigokaihi__c,CardHakkohiyo__c,dairinenkotaishoninzu__c,kohoitakuhi__c');
  define('SELECT_JIMUKANYUSYA','Id,seirinumber__c,shimeisei__c,shimeimei__c,genzainonichigaku__c,kofurikaishu__c,KouzaJyouhou__c,SanteiKisogaku__c,SougakuKanyusya__c,SanteiKisogaku3500__c,SougakuKanyusya3500__c,SanteiKisogaku10000__c,SougakuKanyusya10000__c,waribikigokaihi__c,CardHakkohiyo__c,ordernumber__c,dairikaisha__c,kanyubi__c');
  define('UPDATE_DAIRI','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,dairikingakuannaisofuzumi__c,dairishinchokujokyo__c,dairimoshikomihoho__c');
- define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,kingakuannaisofu__c');
+ define('UPDATE_KOJIN','Id,nenkojinichigaku__c,shinchokujokyo__c,moshikomiuketsuke__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,kingakuannaisofu__c,ordernumber__c');
  define('UPDATE_JIMUKAISYA','Id,dairihokenryooshiharaisogaku__c,dairinyukinshubetsu__c,trading_id__c,dairinyukikingaku__c,dairinyukinkakuninzumi__c,dairinyukinkigen__c,dairinenkotaishoninzu__c,shinchokujokyo__c,moshikomiuketsuke__c,hokenryo__c,dairishinchokujokyo__c,dairimoshikomihoho__c,jimukaisyapurasukanyusyagoukei__c,nenkoudairikaiinkadohakkouhiyou__c,tukikaihi__c');
 
  define('YEAR', '2023');
@@ -490,10 +490,12 @@
   private $_ShiharaiType;
   private $_ShiharaiKigen;
   private $_TradingId;
+  private $_CustomerId;
   private $_CardHakkohiyo;
   private $_DattaiRiyu;
   private $_KaisyaId;
   private $_KanyuDate;
+  private $_Waribikigaku;
 
   private $_Keizoku;
   
@@ -527,13 +529,25 @@
   public function Kingaku10000(){return $this->_Kingaku10000;}
   public function Keizoku(){return $this->_Keizoku;}
   public function KozaJoho(){return $this->_KozaJoho;}
-  public function Kaihi(){return $this->_Kaihi;}
+//  public function Kaihi(){return $this->_Kaihi;}
   public function CardHakkohiyo(){return $this->_CardHakkohiyo;}
   public function ShiharaiType(){return $this->_ShiharaiType;}
   public function TradingId(){return $this->_TradingId;}
+  public function CustomerId(){return $this->_CustomerId;}
   public function ItemDattaiRiyu(){return $this->_ItemDattaiRiyu;}
   public function KaisyaId(){return $this->_KaisyaId;}
+  public function Waribikigaku(){return $this->_Waribikigaku;}
 
+  public function Kaihi(){
+   if(intval($this->_NichigakuSel) == 3500){
+    return 7277-intval($this->Waribikigaku());
+   }
+   if(intval($this->_NichigakuSel) == 10000){
+    return 9650-intval($this->Waribikigaku());
+   }
+   return $this->_Kaihi;
+  }
+  
   /* 更新関数 */
   public function setKeizoku($val){
    if($val == 'keizoku'){
@@ -561,6 +575,7 @@
   }
   public function setTradingId($val){
    $this->_TradingId = $val;
+   if($this->_CustomerId == ''){$this->_CustomerId = $this->_TradingId;}
   }
   public function setKaisyaId($val){
    $this->_KaisyaId = $val;
@@ -601,7 +616,7 @@
    return $_santeikisogakusel;
   }
   public function getHokenryo(){
-   return intval($this->getKingakuSel()) - intval($this->_Kaihi) - intval($this->_CardHakkohiyo);
+   return intval($this->getKingakuSel()) - intval($this->Kaihi()) - intval($this->_CardHakkohiyo);
   }
   
   
@@ -638,6 +653,9 @@
    $this->_Kaihi = intval($_row['waribikigokaihi__c']);
    $this->_CardHakkohiyo = intval($_row['CardHakkohiyo__c']);
    $this->_KanyuDate = $_row['kanyubi__c'];
+   $this->_CustomerId = $_row['ordernumber__c'];
+//   if($this->_CustomerId == ''){$this->_CustomerId = $this->_TradingId;}
+   $this->_Waribikigaku = $_row['waribikigaku__c'];
    
    return true;
   }
@@ -675,6 +693,7 @@
      $updateitems=array_merge($updateitems, array('nyukinkingaku__c'=>$this->getKingakuSel()));
      $updateitems=array_merge($updateitems, array('nyukinkakuninzumi__c'=>true));
      $updateitems=array_merge($updateitems, array('trading_id__c'=>$this->_TradingId));
+     $updateitems=array_merge($updateitems, array('ordernumber__c'=>$this->_CustomerId));
     }
    } else {
     $updateitems=array(

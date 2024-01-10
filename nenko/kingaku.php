@@ -134,7 +134,7 @@
    </div>
    
    <div class="kingaku_box" id="kingaku_box_shiharai">
-    <h3 class="keizokusyalist_header">
+    <h3 class="keizokusyalist_header shiharai_header">
      <span class="keizokusyalist_header_title">お支払方法</span>
      <span class="keizokusyalist_header_shiharaitype"></span>
      <span class=""></span>
