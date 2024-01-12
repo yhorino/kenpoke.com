@@ -59,7 +59,7 @@ function sf_soql_update($select, $from, $where, $orderby, $updateitems){
   }
  
   try {
-     $sobj = sf_soql_select_s($select, $from, $where, $orderby);
+     $sobj = sf_soql_select_s_retry($select, $from, $where, $orderby);
      $sobj->fields = $updateitems;
      $response = $_con->update(array($sobj));
      return TRUE;
@@ -94,6 +94,51 @@ function sf_soql_select_s($select, $from, $where, $orderby){
   }
  
  return $returns[0];
+}
+
+function sf_soql_select_s_retry($select, $from, $where, $orderby) {
+    global $_con;
+    global $sf_login;
+
+    if ($sf_login == false) {
+        init();
+        sf_login();
+        $sf_login = true;
+    }
+
+    $returns = array();
+    $query = "SELECT $select FROM $from WHERE $where $orderby";
+
+    $retryCount = 6; // リトライ回数
+
+    while ($retryCount > 0) {
+        try {
+            $response = $_con->query($query);
+
+            $queryResult = new QueryResult($response);
+
+            for ($queryResult->rewind(); $queryResult->pointer < $queryResult->size; $queryResult->next()) {
+                array_push($returns, $queryResult->current());
+            }
+
+            // 正常に処理が完了したらループを抜ける
+            break;
+
+        } catch (Exception $e) {
+            // リトライまでの待機時間（1秒、2秒、3秒、4秒、5秒）を設定
+            sleep(7-$retryCount);
+
+            // リトライ回数を減少
+            $retryCount--;
+
+            if ($retryCount === 0) {
+                // リトライ回数が0になった場合はエラーをログに記録して終了
+                err_die(__LINE__, __FUNCTION__ . "["  . __LINE__ . "]: Retry count exceeded.");
+            }
+        }
+    }
+
+    return $returns[0];
 }
 
 ?>
