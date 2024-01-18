@@ -109,7 +109,7 @@ function sf_soql_select_s_retry($select, $from, $where, $orderby) {
     $returns = array();
     $query = "SELECT $select FROM $from WHERE $where $orderby";
 
-    $retryCount = 6; // リトライ回数
+    $retryCount = 5; // リトライ回数
 
     while ($retryCount > 0) {
         try {
@@ -125,8 +125,8 @@ function sf_soql_select_s_retry($select, $from, $where, $orderby) {
             break;
 
         } catch (Exception $e) {
-            // リトライまでの待機時間（1秒、2秒、3秒、4秒、5秒）を設定
-            sleep(7-$retryCount);
+            // リトライまでの待機時間（2秒、4秒、6秒、...）を設定
+            sleep((6-$retryCount)*2);
 
             // リトライ回数を減少
             $retryCount--;

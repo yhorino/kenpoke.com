@@ -415,6 +415,7 @@
    
    foreach($this->_KanyusyaData as $kd){
     $kd->updateNenkoRecordData();
+    usleep(100000);
    }
    
    return true;
@@ -458,6 +459,7 @@
    
    foreach($this->_KanyusyaData as $kd){
     $kd->updateNenkoRecordData();
+    usleep(100000);
    }
    
    return true;

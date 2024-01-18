@@ -637,72 +637,77 @@
  }
 }
 
-@scope (.show_on_print) {
- .print_title{
+/*@scope (.show_on_print) {*/
+ .show_on_print .print_title{
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
  }
- .print_table_sougaku{
+ .show_on_print .print_table_sougaku{
   font-size: 16px;
   margin-bottom: 10px;
  }
- .print_table_sougaku th{
+ .show_on_print .print_table_sougaku th{
   padding: 1em 0;
   text-align: center;
   border: 1px solid #000;
   width: 12em;
  }
- .print_table_sougaku td{
+ .show_on_print .print_table_sougaku td{
   padding: 1em 0;
   text-align: center;
   border: 1px solid #000;
   width: 12em;
  }
- .print_table_kikan_ninzu{
+ .show_on_print .print_table_kikan_ninzu{
   font-size: 16px;
   margin-bottom: 20px;
  }
- .print_table_kikan_ninzu th{
+ .show_on_print .print_table_kikan_ninzu th{
   padding: 0.3em 0;
   text-align: center;
   border: 1px solid #000;
   width: 12em;
  }
- .print_table_kikan_ninzu td{
+ .show_on_print .print_table_kikan_ninzu td{
   padding: 0.3em 0;
   text-align: center;
   border: 1px solid #000;
   width: 12em;
  }
- .print_table_kanyusya{
+ .show_on_print .print_table_kanyusya{
   font-size: 12px;
   margin-bottom: 0px;
   width: 100%;
  }
- .print_table_kanyusya th{
+ .show_on_print .print_table_kanyusya th{
   padding: 0.5em;
   text-align: center;
   border: 1px solid #000;
  }
- .print_table_kanyusya th.small{
+ .show_on_print .print_table_kanyusya th.small{
   font-size: 0.7em;
  }
- .print_table_kanyusya td{
+ .show_on_print .print_table_kanyusya td{
   padding: 0.5em;
   text-align: center;
   border: 1px solid #000;
  }
- .print_table_kanyusya .left_border_tick{
+ .show_on_print .print_table_kanyusya .left_border_tick{
   border-left-width: 2px;
  }
- .print_table_kanyusya td.name{
+ .show_on_print .print_table_kanyusya td.name{
   text-align: left;
  }
- .print_table_kanyusya td.kingaku{
+ .show_on_print .print_table_kanyusya td.kingaku{
   text-align: right;
  }
- .addinfo{
+ .show_on_print .addinfo{
   font-size: 10px;
  }
+/*}*/
+
+.processing_message {
+    text-align: center;
+    padding: 50px;
 }
