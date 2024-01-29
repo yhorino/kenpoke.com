@@ -52,7 +52,8 @@
  <input type="hidden" name="payment_term_min" value="<?php echo $payment_term_min;?>">
  <input type="hidden" name="banner_url" value="">
  <input type="hidden" name="free_memo" value="">
- <input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko/done.php">
+<!-- <input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko/done.php">-->
+ <input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko/processing.php">
  <input type="hidden" name="stop_return_url" value="https://www.kenpoke.com/nenko/kingaku.php">
  <input type="hidden" name="copy_right" value="">
  <input type="hidden" name="customer_family_name" value="">

@@ -59,7 +59,8 @@
     $nenko_data_unserialize->setShiharaiKigen('');
    }
    
-   $_nextpage = 'done.php';
+   //$_nextpage = 'done.php';
+   $_nextpage = 'processing.php';
    break;
   }
   case 'done':
