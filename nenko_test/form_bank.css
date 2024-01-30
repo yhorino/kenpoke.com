@@ -1,0 +1,180 @@
+ .cal_div {
+    text-align: center;
+    padding: 20px;
+}
+/*
+.show_pc{
+ display: block;
+}
+.hide_pc{
+ display: none;
+}
+*/
+.popup {
+  height: 100vh;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.popup strong{
+    font-size: 2em;
+    margin: 0 auto;
+    display: block;
+    width: 13em;
+    max-width: 100%;
+    line-height: 1.2em;
+}
+.popup strong span{
+ display: inline-block;
+}
+.content {
+  max-width: 500px;
+  opacity: 1;
+  color: #000;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  position: relative;
+ background-color: #fff;
+ padding: 20px;
+}
+.content h2{
+ text-align: center;
+ color: #DF5656;
+ font-size: 23px;
+ font-weight: bold;
+}
+.content .p1{
+ text-align: center;
+ margin: 10px auto;
+ font-size: 16px;
+}
+.content .p2{
+ text-align: center;
+ color: #DF5656;
+ font-size: 23px;
+ margin: 20px auto;
+ line-height: 30px;
+}
+.content .p3{
+ font-size: 13px;
+ margin-top: 15px;
+}
+.content #symbol_a{
+ position: absolute;
+ top: -30px;
+ left: -30px;
+}
+.popup_back{
+ width: 100%;
+}
+#popup_button{
+    margin: 1em auto 0;
+    width: 300px;
+    max-width: 90%;
+}
+.popup_button_div{
+ display: flex;
+ justify-content: center;
+}   
+#popup_kakutei,
+#popup_yes,
+#popup_no{
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+ border: 1px solid #F8B736;
+ padding: 10px 15px;
+ border-radius: 20px;
+ width: 100px;
+}
+#popup_yes{
+ margin-right: 20px;
+}
+#popup_kakutei img,
+#popup_yes img,
+#popup_no img{
+ width: 100%;
+}
+#popup_no{
+}
+#popup_kakutei{
+ display: block;
+ margin: 15px auto 0px;
+}
+#popup_close{
+    position: absolute;
+    color: #000;
+ font-size: 20px;
+ top: 2.5%;
+ right: 2.5%;
+ width: 3.5%;
+ height: 8%;
+ cursor: pointer;
+}
+@media screen and (max-width: 960px) {
+ /*
+.show_sp{
+ display: block;
+}
+.hide_sp{
+ display: none !important;
+}
+ */
+ .content {
+  max-width: 400px;
+  width: 85%;
+ }
+ .popup strong{
+    width: 8em;
+    text-align: center;
+ }
+ #popup_button{
+  max-width: 20em;
+ }
+ #popup_yes{
+ }
+ #popup_no{
+ }
+}
+@media screen and (max-width: 400px) {
+ #popup_yes{
+ }
+ #popup_no{
+ }
+ .popup strong{
+  font-size: 1.7em;
+ }
+ #popup_button{
+  width: 215px;
+ }
+ #popup_close{
+  right: 6%;
+ }
+ .content{
+  padding: 12px;
+ }
+ .content .p1{
+  font-size: 12px;
+ }
+ .content .p2{
+  font-size: 16px;
+  line-height: 20px;
+ }
+ .content .p3{
+  font-size: 10px;
+  line-height: 12px;
+ }
+ .content #symbol_a{
+  top: -20px;
+  left: -20px;
+  width: 44px;
+ }
+}

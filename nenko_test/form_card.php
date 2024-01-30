@@ -1,6 +1,6 @@
 <?php
-  //$mode = -1; // DEBUG
-  $mode = 0;
+  $mode = -1; // DEBUG
+  //$mode = 0;
 
   $merchant_name = '一人親方労災保険ＲＪＣ';
   $payment_detail = '一人親方年度更新';
@@ -52,9 +52,9 @@
  <input type="hidden" name="payment_term_min" value="<?php echo $payment_term_min;?>">
  <input type="hidden" name="banner_url" value="">
  <input type="hidden" name="free_memo" value="">
-<!-- <input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko/done.php">-->
- <input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko/processing.php">
- <input type="hidden" name="stop_return_url" value="https://www.kenpoke.com/nenko/kingaku.php">
+ <!--<input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko_test/done.php">-->
+ <input type="hidden" name="return_url" value="https://www.kenpoke.com/nenko_test/processing.php">
+ <input type="hidden" name="stop_return_url" value="https://www.kenpoke.com/nenko_test/kingaku.php">
  <input type="hidden" name="copy_right" value="">
  <input type="hidden" name="customer_family_name" value="">
  <input type="hidden" name="customer_name" value="">
