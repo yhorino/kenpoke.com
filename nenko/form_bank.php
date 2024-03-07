@@ -1,11 +1,15 @@
 <?php 
+$kigen_last = date('2024-03-15');
 $kigen = date('Y-m-d', strtotime('+3 days'));
+if ($kigen > $kigen_last) { $kigen = $kigen_last; }
 $kigen_max = date('Y-m-d', strtotime('+10 days'));
-$kigen_disp = date('Y年m月d日', strtotime('+3 days'));
-$kigen_max_disp = date('Y年m月d日', strtotime('+10 days'));
+if ($kigen_max > $kigen_last) { $kigen_max = $kigen_last; }
+
+$kigen_disp = date('Y年m月d日', strtotime($kigen));
+$kigen_max_disp = date('Y年m月d日', strtotime($kigen_max));
 setlocale(LC_TIME, 'ja_JP.UTF-8');
-$kigen_dow = strftime("%a", strtotime('+3 days'));
-$kigen_max_dow = strftime("%a", strtotime('+10 days'));
+$kigen_dow = strftime("%a", strtotime($kigen));
+$kigen_max_dow = strftime("%a", strtotime($kigen_max));
 $kigen_disp = $kigen_disp.'('.$kigen_dow.')';
 $kigen_max_disp = $kigen_max_disp.'('.$kigen_max_dow.')';
 ?>
@@ -22,6 +26,7 @@ $kigen_max_disp = $kigen_max_disp.'('.$kigen_max_dow.')';
    <h2>お振込みのご注意</h2>
    <p class="p1">振込手数料は、お客様負担となります。<br>
     お振込み期限は、本日から3日以内です。<br>
+    （最終期限：3月15日（金））<br>
     <!--お振込み期限は、3月6日（月）です。<br>-->
     昨年度は99%の方が期限内にお振込みいただいております。</p>
    <p class="p2"><span id="bank_kigen2"><?php echo $kigen_disp;?></span>までに<br>

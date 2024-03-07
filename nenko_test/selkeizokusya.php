@@ -239,6 +239,9 @@ $NICHIGAKU_CHANGE = NICHIGAKU_CHANGE_OK;
   });
   
   $(function(){
+   
+<?php $sessionLifetime = ini_get('session.gc_maxlifetime'); echo('console.log("gc_maxlifetime='.$sessionLifetime.'");');?>
+   
    $('.change_nichigaku_body').hide();
    //$('input[name="info_check"]').prop('checked', false);
    
